@@ -1,5 +1,7 @@
 Yahoo_S5_dataset/
 Yahoo_S5_dataset.tgz
+ydata-labeled-time-series-anomalies-v1_0/
+preprocessed_ydata-labeled-time-series-anomalies-v1_0/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
