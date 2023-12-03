@@ -25,11 +25,6 @@ Authors.
 \newblock Frobnication tutorial, 2014.
 \newblock Supplied as additional material {\tt tr.pdf}.
 
-\bibitem{kim2018web}
-T.-Y. Kim and S.-B. Cho.
-\newblock Web traffic anomaly detection using c-lstm neural networks.
-\newblock {\em Expert Systems with Applications}, 106:66--76, Sep 2018.
-
 \bibitem{wong2022aer}
 L. Wong, D. Liu, L. Berti-Equille, S. Alnegheimish, and K. Veeramachaneni.
 \newblock Aer: Auto-encoder with regression for time series anomaly detection.

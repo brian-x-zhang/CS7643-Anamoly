@@ -47,7 +47,7 @@ Brian Zhang
 \begin{abstract}
    In this project, we examine two leading papers describing novel methods in the field of anomaly detection for timeseries data. We reproduce the results of these
    papers while ekeing out additional performance by fine-tuning of the models when applied to an established labelled synthetic dataset anomaly detection, "S5- A Labeled Anomaly Detection Dataset". 
-   The first method examined is C-LSTM neural network applied directly to timeseries web traffic data, as described in the paper by Tae-Young Kim and Sung-Bae Cho \cite{kim2018web}.  
+   The first method examined is C-LSTM neural network applied directly to timeseries web traffic data, as described in the paper by Tae-Young Kim and Sung-Bae Cho \cite.  
    Model performance similar to that of the authors is demonstrated using a pytorch implementation of the model architecture described. 
    The second method reproduced is a novel Auto-encoder with Regression (AER) approach, as described in the paper by Lawrence
    Wong, et al \cite{wong2022aer}. 
@@ -104,20 +104,21 @@ which enables us to better test the robustness of our model implementations. The
 %-------------------------------------------------------------------------
 \section{Other Sections}
 
-\begin{table}[h]
-\centering
-\begin{tabular}{|l|p{6cm}|p{6cm}|}
+\begin{table*}
+\begin{tabular}{|l|c|p{8cm}|}
 \hline
-\textbf{Name}                & \textbf{Primary Responsibilities}                   & \textbf{Secondary Responsibilities} \\ \hline
-Lily Chebotarova             & Researched labelled anomaly detection datasets and found selected yahoo dataset for project. Developed C-LSTM model implementation code. & Data pre-processing                  \\ \hline
-Raga Lasya Munagala          & Developed data pre-processing code.                 &                                      \\ \hline
-Ligeng Peng                  & Developed autoencoder with regression model implementation code. &                                      \\ \hline
-Brian Zhang                  & Primary author for text of report itself, handled all LaTeX formatting. Created and maintained team git repo: \url{https://github.com/brian-x-zhang/CS7643-Anamoly}. Performed hyperparameter tuning of C-LSTM \& Auto-encoder models. &                                      \\ \hline
+Student Name & Contributed Aspects & Details \\
+\hline\hline
+Lily Chebotarova            & C-LSTM and initial research  & Researched labelled anomaly detection datasets and found selected Yahoo dataset for project. Developed C-LSTM model implementation code. \\ \hline
+Raga Lasya Munagala         & Pre-processing & Developed data pre-processing code. \\ \hline
+Ligeng Peng                 & Auto-encoder with Regression  & Developed autoencoder with regression model implementation code. \\ \hline
+Brian Zhang                 & Report writing and hyperparameter tuning  & Primary author for text of report itself, handled all LaTeX formatting. Created and maintained team git repo: \url{https://github.com/brian-x-zhang/CS7643-Anamoly}. Performed hyperparameter tuning of C-LSTM \& Auto-encoder models. \\ \hline
+\hline
 \end{tabular}
-\caption{Team Member Contributions}
-\label{tab:team_contributions}
-\end{table}
-   
+\caption{Contributions of team members.}
+\label{tab:contributions}
+\end{table*}
+
 
 
 You are welcome to introduce additional sections or subsections, if required, to address the following questions in detail. 
