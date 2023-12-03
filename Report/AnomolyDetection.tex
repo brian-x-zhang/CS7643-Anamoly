@@ -34,7 +34,10 @@
 % To save space, use either the email address or home page, not both
 \and
 Raga Lasya Munagala
-\and Ligeng Peng
+\and 
+Ligeng Peng
+\and
+Brian Zhang
 }
 
 \maketitle
@@ -42,27 +45,46 @@ Raga Lasya Munagala
 
 %%%%%%%%% ABSTRACT
 \begin{abstract}
-   The ABSTRACT is to be in fully-justified italicized text, at the top
-   of the left-hand column, below the author and affiliation
-   information. Use the word ``Abstract'' as the title, in 12-point
-   Times, boldface type, centered relative to the column, initially
-   capitalized. The abstract is to be in 10-point, single-spaced type.
-   Leave two blank lines after the Abstract, then begin the main text.
-   Look at previous CVPR abstracts to get a feel for style and length. 
-   The abstract section should contain a brief summary of your work that
-   includes the problem statement, proposed solution and results.
+   In this project, we examine two leading papers describing novel methods in the field of anomaly detection for timeseries data. We reproduce the results of these
+   papers while ekeing out additional performance by fine-tuning of the models when applied to an established labelled synthetic dataset anomaly detection, "S5- A Labeled Anomaly Detection Dataset". 
+   The first method examined is C-LSTM neural network applied directly to timeseries web traffic data, as described in the paper by Tae-Young Kim and Sung-Bae Cho.  
+   Model performance similar to that of the authors is demonstrated using a pytorch implementation of the model architecture described. 
+   The second method reproduced is a novel Auto-encoder with Regression (AER) approach, as described in the paper by Lawrence
+   Wong, et al. 
+
 \end{abstract}
 
 %%%%%%%%% BODY TEXT
 \section{Introduction/Background/Motivation}
 
 (5 points) What did you try to do? What problem did you try to solve? Articulate your objectives using absolutely no jargon. 
+Anomaly detection is a common problem across many domains, with potentially profound implications if addressed effectively. Anomalies identify some sort of 
+irregularity in the normal pattern or prevailing trend of some sort of data. Perhaps the most common type of anomaly, and the type addressed by this paper, occurs in
+timeseries data. Anomalies in web-traffic data may indicate ptoential issues such as unexpected spikes in user traffic which may be due to cyber-attacks, system failures, 
+or viral trends. Our paper examines leading novel approaches in this field of anomaly detection and compares the relative performance of these methods. 
 
 (5 points) How is it done today, and what are the limits of current practice?
+The current state of the art in timeseries anomaly detection primarily consists of deep learning methods, which together with the high prevalance and imporatance of this problem, 
+makes it an ideal candidate for study in this paper. Common deep learning methods employed in this field include Long Short-Term Memory (LSTM) networks and autoencoders, both of which
+we examine in this paper. RNN-based methods such as these are particularly well-suited for timeseries problems which inherently consist of sequential data.
+
+The paper by Tae-Young Kim and Sun-Bae Cho offers an improvment over conventional LSTM approaches by integrating a convolutional layer as the input for several LSTM
+layers, reducing temporal variations and improivng overall performance. Similarly, the paper by Lawerence Wong, et al. offers an improvment over conventional approaches by combining 
+separate autoencoder and LSTM approaches models into a single composite model optimizing a joint objective function, and able to make bi-directional predictions.
 
 (5 points) Who cares? If you are successful, what difference will it make? 
+We will compare the effectiveness of the two approaches investigated in this paper to see which offers the best performance on the anomaly detection dataset selected. 
+
+Timely detection of these anomalies is essential for organzing a prompt response and minimizing the impact to system performance and user experience. 
+In short, a robust and effective anomaly detection method for a given problem should allow us to proactively detect irregular patterns and diagnose potential issues, thus
+enhancing the quality and reliability of the services tracked by this timeseries data. 
 
 (5 points) What data did you use? Provide details about your data, specifically choose the most important aspects of your data mentioned \href{https://arxiv.org/abs/1803.09010}{here}. You don’t have to choose all of them, just the most relevant.
+Our paper uses the dataset, "S5 A Labeled Anomaly Detection Datset, verison 1.0 (16M)", which offers a diverse range of real and synthetic time-series data specifically
+curated for the purpose of anomaly detection. The dataset is publicly available via Yahoo Research at the following link: webscope.sandbox.yahoo.com/catalog.php?datatype=s\&did=70\&gucocounter=1.
+
+This dataset was chosen because it offers a diverse set of edge cases for testing our models, including outliers and various change-points. The timesries data also includes varying trend, noise, and seasonality 
+which enables us to better test the robustness of our model implementations. The real portion of the dataset is made up of the web traffic metrics of various yahoo services, alongside synthetic data added to the dataset. 
 %-------------------------------------------------------------------------
 %------------------------------------------------------------------------
 \section{Approach}
