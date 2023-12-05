@@ -25,6 +25,11 @@ Authors.
 \newblock Frobnication tutorial, 2014.
 \newblock Supplied as additional material {\tt tr.pdf}.
 
+\bibitem{yahooS5}
+Yahoo Research.
+\newblock S5 - a labeled anomaly detection dataset.
+\newblock Available at: \url{https://webscope.sandbox.yahoo.com/catalog.php?datatype=s&did=70}.
+
 \bibitem{wong2022aer}
 L. Wong, D. Liu, L. Berti-Equille, S. Alnegheimish, and K. Veeramachaneni.
 \newblock Aer: Auto-encoder with regression for time series anomaly detection.

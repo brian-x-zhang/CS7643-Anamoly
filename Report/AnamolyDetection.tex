@@ -80,8 +80,8 @@ In short, a robust and effective anomaly detection method for a given problem sh
 enhancing the quality and reliability of the services tracked by this timeseries data. 
 
 (5 points) What data did you use? Provide details about your data, specifically choose the most important aspects of your data mentioned \href{https://arxiv.org/abs/1803.09010}{here}. You don’t have to choose all of them, just the most relevant.
-Our paper uses the dataset, "S5 A Labeled Anomaly Detection Datset, verison 1.0 (16M)", which offers a diverse range of real and synthetic time-series data specifically
-curated for the purpose of anomaly detection. The dataset is publicly available via Yahoo Research at the following link: webscope.sandbox.yahoo.com/catalog.php?datatype=s\&did=70\&gucocounter=1.
+Our paper uses the dataset, \textit{S5 A Labeled Anomaly Detection Dataset} \cite{yahooS5}, which offers a diverse range of real and synthetic time-series data specifically
+curated for the purpose of anomaly detection. The dataset is publicly available via Yahoo Research \cite{yahooS5}.
 
 This dataset was chosen because it offers a diverse set of edge cases for testing our models, including outliers and various change-points. The timesries data also includes varying trend, noise, and seasonality 
 which enables us to better test the robustness of our model implementations. The real portion of the dataset is made up of the web traffic metrics of various yahoo services, alongside synthetic data added to the dataset. 
@@ -90,6 +90,24 @@ which enables us to better test the robustness of our model implementations. The
 \section{Approach}
 
 (10 points) What did you do exactly? How did you solve the problem? Why did you think it would be successful? Is anything new in your approach? 
+\subsection{Autoencoder}
+The structure of the problem was characterized by a highly imbalanced dataset, with normal network activity dominating and anomalies representing a minority class. 
+Given the significance of detecting these rare anomalies, the structure of the autoencoder model was designed to reflect the underlying data dynamics. 
+We start the problem with 80\% training dataset and 20\% testing dataset. The encoder is trained on a subset of the training dataset, capturing the essential characteristics of the network traffic, before being trained 
+per the following steps:
+
+
+\begin{enumerate}
+    \item Created an autoencoder with an encoder and a decoder in PyTorch.
+    \item Trained the autoencoder using the training dataset.
+    \item Extracted the encoder from the trained autoencoder.
+    \item Built a classifier using the extracted encoder for feature representation.
+    \item Trained the classifier using the features from the training set.
+    \item Evaluated the model on a separate test set, passing inputs through the autoencoder and then through the classifier, calculating accuracy for anomaly detection.
+\end{enumerate}
+
+In the autoencoder model, the parts with learned parameters were primarily associated with the encoder and decoder components. These components consisted of linear layers (fully connected) and activation functions, such as ReLU, designed to transform and compress the input data. 
+Specifically, the encoder learned to map the input features to a lower-dimensional representation, capturing essential information about normal network behavior. Conversely, the decoder learned to reconstruct the input data from this compressed representation.
 
 (5 points) What problems did you anticipate? What problems did you encounter? Did the very first thing you tried work? 
 
@@ -424,20 +442,20 @@ of the use of color in your document.
 Contributions by individual team members for this project are described below. 
 
 \begin{table*}
-   \begin{tabular}{|l|c|p{8cm}|}
-   \hline
-   Student Name & Contributed Aspects & Details \\
-   \hline\hline
-   Lily Chebotarova            & C-LSTM and initial research  & Researched labelled anomaly detection datasets and found selected Yahoo dataset for project. Developed C-LSTM model implementation code (anomalydetection.ipynb). \\ \hline
-   Raga Lasya Munagala         & Pre-processing & Developed data pre-processing code (data_preprocessing.ipynb). \\ \hline
-   Ligeng Peng                 & Auto-encoder with Regression  & Developed autoencoder with regression model implementation code(anomaly_detection_encoder.ipynb). \\ \hline
-   Brian Zhang                 & Hyperparmater Tuning, Model Evaluation, and Report Writing  & Performed hyperparameter tuning of Auto-encoder model. Authored ModelEvaluation.py script to evaluate both models. Primary author for text of report itself outside of autoencoder and C-LSTM sections describing model architecture and training (handled all LaTeX formatting). Created and maintained team git repo: \url{https://github.com/brian-x-zhang/CS7643-Anamoly}. \\ \hline
-   \hline
-   \end{tabular}
-   \caption{Contributions of team members.}
-   \label{tab:contributions}
-   \end{table*}
-   
+\begin{tabular}{|l|c|p{8cm}|}
+\hline
+Student Name & Contributed Aspects & Details \\
+\hline\hline
+Lily Chebotarova            & C-LSTM and initial research  & Researched labelled anomaly detection datasets and found selected Yahoo dataset for project. Developed C-LSTM model implementation code (anomalydetection.ipynb). \\ \hline 
+Raga Lasya Munagala         & Pre-processing & Developed data pre-processing code \(data_preprocessing.ipynb\). \\ \hline
+Ligeng Peng                 & Auto-encoder with Regression  & Developed autoencoder with regression model implementation code \(anomaly_detection_encoder.ipynb\). \\ \hline
+Brian Zhang                 & Hyperparmater Tuning, Model Evaluation, and Report Writing  & Performed hyperparameter tuning of Auto-encoder model. Authored ModelEvaluation.py script to evaluate both models. Primary author for text of report itself outside of autoencoder and C-LSTM sections describing model architecture and training (handled all LaTeX formatting). Created and maintained team git repo: \url{https://github.com/brian-x-zhang/CS7643-Anamoly}. \\ \hline
+\hline
+\end{tabular}
+\caption{Contributions of team members.}
+\label{tab:contributions}
+\end{table*}
+
 
 %-------------------------------------------------------------------------
 
