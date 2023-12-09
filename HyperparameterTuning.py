@@ -2,7 +2,8 @@ import pandas as pd
 import numpy as np
 
 from pre_processing import PreProcessing
-from models import AutoEncoder, CLSTM
+from models.AutoEncoder import Autoencoder
+from models.CLSTM import CLSTM
 from itertools import product
 from pprint import pprint
 from copy import deepcopy
@@ -129,7 +130,7 @@ def hyperparameter_tuning(hyperparams, data):
     for params in param_combinations:
         
         if params['type'] == 'autoencoder':
-            model = AutoEncoder(data.X_train.shape[1], params['encoder_layer_sizes'], params['decoder_layer_sizes'])
+            model = Autoencoder(data.X_train.shape[1], params['encoder_layer_sizes'], params['decoder_layer_sizes'])
         else:
             model = CLSTM(params['conv1_out_channels'], params['kernel_size'], params['lstm_hidden_size'], params['fc1_out_features'])    
         
