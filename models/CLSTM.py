@@ -2,7 +2,7 @@ import torch
 import torch.nn as nn
 
 class CLSTM(nn.Module):
-    def __init__(self, conv1_out_channels=64, kernel_size=5, lstm_hidden_size=64, fc1_out_features=32):
+    def __init__(self, conv1_out_channels=64, kernel_size=5, lstm_hidden_size=64, fc1_out_features=32,):
         super(CLSTM, self).__init__()
         self.conv1 = nn.Conv1d(1, conv1_out_channels, kernel_size=kernel_size, stride=1, padding=2)
         self.pool = nn.MaxPool1d(2, stride=2)
@@ -14,15 +14,25 @@ class CLSTM(nn.Module):
         self.flatten = nn.Flatten()
         
     def forward(self, x):
-        x = self.tanh(self.conv1(x))
+        x = self.conv1(x)
+        x = self.tanh(x)
         x = self.pool(x)
-        x = self.tanh(self.conv2(x))
-        x = self.pool(x)
-        x = x.view(x.size(0), -1, 960)
 
+        x = self.conv2(x)
+        x = self.tanh(x)
+        x = self.pool(x)
+
+        # Reshape for LSTM layer
+        #x = x.permute(0, 2, 1)
+        #x = x.reshape(x.size(0), 1, -1)
+        x = x.view(x.size(0), 1, -1)
         x, _ = self.lstm(x)
-        x = self.flatten(x)
-        #x = x.contiguous().view(x.size(0), -1)
+
+        # Flatten the output for Dense layer
+        #x = self.flatten(x)
+        x = x.contiguous().view(x.size(0), -1)
+
+        # Dense layers
         x = self.tanh(self.fc1(x))
         x = torch.softmax(self.fc2(x), dim=1)
         return x
