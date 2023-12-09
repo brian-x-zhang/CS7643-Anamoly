@@ -80,7 +80,7 @@ class PreProcessing:
         
     def pre_process_autoencoder(self):
         self.read_files()
-        self.train_test_split()
+        self.train_test_split(scaleX=True)
         
         # Convert data to PyTorch tensors
         self.X_train = torch.tensor(self.X_train, dtype=torch.float32)
