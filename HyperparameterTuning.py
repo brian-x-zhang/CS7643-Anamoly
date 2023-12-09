@@ -66,7 +66,7 @@ def train_and_validate(data, model, params, epochs=100):
         optimizer = optim.Adam(model.parameters(), lr=params['learning_rate'])
         
     # Loss    
-    if params['criterion'] == 'BCELoss':
+    if params['criterion'] == 'MSELoss':
         criterion = 'MSELoss'
     else:
         criterion = 'BCELoss'
