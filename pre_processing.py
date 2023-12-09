@@ -89,6 +89,10 @@ class PreProcessing:
         self.X_test = torch.tensor(self.X_test, dtype=torch.float32)
         self.y_test = torch.tensor(self.y_test.values, dtype=torch.float32)
         
+        self.train_dataset = TensorDataset(self.X_train_tensor, self.y_train_tensor)
+        self.train_loader = DataLoader(self.train_dataset, batch_size=512, shuffle=True)
+        self.test_dataset = TensorDataset(self.X_test_tensor, self.y_test_tensor)
+        self.test_loader = DataLoader(self.test_dataset, batch_size=64, shuffle=False)
         
         
     def pre_process_clstm(self, batch_size=512):
