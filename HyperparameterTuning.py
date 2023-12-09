@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
 
-from pre_processing import PreProcessing
+from PreProcessing import PreProcessing
 from models.AutoEncoder import Autoencoder
 from models.CLSTM import CLSTM
 from itertools import product
