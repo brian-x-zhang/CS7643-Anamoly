@@ -21,12 +21,12 @@ def tune_autoencoder():
     input_dim = data.X_train.shape[1]
 
     autoencoder_grid = {
-        'type': 'autoencoder',
+        'type': ['autoencoder'],
         'encoder_layer_sizes': [[64, 32, 16], [128, 64, 32]],
         'decoder_layer_sizes': [[32, 64, input_dim], [64, 128, input_dim]],
         'learning_rate': [0.001, 0.01],
         'optimizer': ['Adam', 'SGD'],
-        'criterion': 'MSELoss'
+        'criterion': ['MSELoss']
     }
 
 def tune_clstm():
@@ -34,14 +34,14 @@ def tune_clstm():
     data.pre_process_clstm()
     
     clstm_grid = {
-        'type':'clstm',
+        'type': ['clstm'],
         'conv1_out_channels': [32, 64],
         'kernel_size': [3, 5],
         'lstm_hidden_size': [32, 64],
         'fc1_out_features': [16, 32],
         'learning_rate': [0.001, 0.01],
         'optimizer': ['Adam', 'SGD'],
-        'criterion': 'BCELoss'
+        'criterion': ['BCELoss']
     }
     
     results, best_model = hyperparameter_tuning(clstm_grid, data)
@@ -67,9 +67,9 @@ def train_and_validate(data, model, params, epochs=100):
         
     # Loss    
     if params['criterion'] == 'MSELoss':
-        criterion = 'MSELoss'
+        criterion = nn.MSELoss()
     else:
-        criterion = 'BCELoss'
+        criterion = nn.BCELoss()
         
     # Gradient Clipping
     max_grad_norm = 1.0
