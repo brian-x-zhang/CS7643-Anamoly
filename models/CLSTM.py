@@ -10,6 +10,8 @@ class CLSTM(nn.Module):
         self.lstm = nn.LSTM(input_size=960, hidden_size=lstm_hidden_size, batch_first=True)
         self.fc1 = nn.Linear(lstm_hidden_size, fc1_out_features)
         self.fc2 = nn.Linear(fc1_out_features, 2)
+        self.tanh = nn.Tanh()
+        self.flatten = nn.Flatten()
         
     def forward(self, x):
         x = self.tanh(self.conv1(x))
