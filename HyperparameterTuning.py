@@ -98,6 +98,11 @@ def train_and_validate(data, model, params, epochs=100):
     
     model.eval()
     
+    true_labels = []
+    predicted_labels = []
+    test_loss = 0.0
+    total_samples = 0
+
     with torch.no_grad():
         for inputs, targets in data.test_loader:
             inputs = inputs.to(device)
