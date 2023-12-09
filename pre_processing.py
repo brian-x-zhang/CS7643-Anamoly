@@ -110,7 +110,7 @@ class PreProcessing:
         self.y_train = torch.Tensor(self.y_train)
         self.y_test = torch.LongTensor(self.y_test)
         
-        self.train_dataset = TensorDataset(self.X_train_tensor, self.y_train_tensor)
+        self.train_dataset = TensorDataset(self.X_train, self.y_train)
         self.train_loader = DataLoader(self.train_dataset, batch_size=batch_size, shuffle=True)
-        self.test_dataset = TensorDataset(self.X_test_tensor, self.y_test_tensor)
+        self.test_dataset = TensorDataset(self.X_test, self.y_test)
         self.test_loader = DataLoader(self.test_dataset, batch_size=batch_size, shuffle=False)
