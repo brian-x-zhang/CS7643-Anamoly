@@ -1,3 +1,4 @@
+import torch
 import torch.nn as nn
 
 class Autoencoder(nn.Module):
@@ -19,4 +20,15 @@ class Autoencoder(nn.Module):
     def forward(self, x):
         x = self.encoder(x)
         x = self.decoder(x)
+        return x
+    
+class Classifier(nn.Module):
+    def __init__(self, encoder):
+        super(Classifier, self).__init__()
+        self.encoder = encoder
+        self.fc = nn.Linear(16, 1)
+
+    def forward(self, x):
+        x = self.encoder(x)
+        x = torch.sigmoid(self.fc(x))
         return x

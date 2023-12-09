@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 
 from PreProcessing import PreProcessing
-from models.AutoEncoder import Autoencoder
+from models.AutoEncoder import Autoencoder, Classifier
 from models.CLSTM import CLSTM
 from itertools import product
 from pprint import pprint
@@ -28,6 +28,10 @@ def tune_autoencoder():
         'optimizer': ['Adam'],
         'criterion': ['MSELoss']
     }
+    
+    results, best_model = hyperparameter_tuning(autoencoder_grid, data)
+    
+    return results, best_model
 
 def tune_clstm():
     data = PreProcessing()
@@ -40,7 +44,7 @@ def tune_clstm():
         'lstm_hidden_size': [32, 64],
         'fc1_out_features': [16, 32],
         'learning_rate': [0.001, 0.01],
-        'optimizer': ['Adam'],
+        'optimizer': ['Adam'], # SGD performed poorly
         'criterion': ['BCELoss']
     }
     
