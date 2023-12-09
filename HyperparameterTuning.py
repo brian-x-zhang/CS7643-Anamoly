@@ -48,7 +48,7 @@ def tune_clstm():
     return results, best_model
     
     
-def train_and_validate(data, model, params, epochs=200):
+def train_and_validate(data, model, params, epochs=100):
     pprint(f"Training Model: {pprint(params)}")
     
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
