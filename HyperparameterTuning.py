@@ -134,7 +134,7 @@ def hyperparameter_tuning(hyperparams, data):
         else:
             model = CLSTM(params['conv1_out_channels'], params['kernel_size'], params['lstm_hidden_size'], params['fc1_out_features'])    
         
-        f1, accuracy, precision, recall, avg_test_loss, _model = train_and_validate(model, data.train_loader, params)
+        f1, accuracy, precision, recall, avg_test_loss, _model = train_and_validate(data.train_loader, model, params)
         
         params['F1'] = f1
         params['Accuracy'] = accuracy
