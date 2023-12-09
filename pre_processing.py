@@ -1,11 +1,15 @@
 import pandas as pd
 import numpy as np
 import glob
+import torch
+import torch.nn as nn
+import torch.optim as optim
+from torch.utils.data import DataLoader, TensorDataset
+
 from sklearn import preprocessing
-import matplotlib.pyplot as plt
-import seaborn as sns
-from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, confusion_matrix
 from sklearn.preprocessing import StandardScaler
+
+from keras.utils import to_categorical
 
 class PreProcessing:
     def __init__(self):
@@ -73,3 +77,36 @@ class PreProcessing:
         self.X_test = X_test
         self.y_train = y_train
         self.y_test = y_test
+        
+    def pre_process_autoencoder(self):
+        self.read_files()
+        self.train_test_split()
+        
+        # Convert data to PyTorch tensors
+        self.X_train = torch.tensor(self.X_train, dtype=torch.float32)
+        self.y_train = torch.tensor(self.y_train, dtype=torch.float32)
+        
+        self.X_test = torch.tensor(self.X_test, dtype=torch.float32)
+        self.y_test = torch.tensor(self.y_test.values, dtype=torch.float32)
+        
+        
+        
+    def pre_process_clstm(self, batch_size=512):
+        self.read_files()
+        self.train_test_split()
+        
+        self.X_train = self.X_train.to_numpy().reshape(-1, 60, 1)
+        self.X_test = self.X_test.to_numpy().reshape(-1, 60, 1)
+        self.y_test = self.y_test.to_numpy()
+        self.y_train = to_categorical(self.y_train)
+        
+        
+        self.X_train = torch.Tensor(self.X_train).permute(0, 2, 1)
+        self.X_test = torch.Tensor(self.X_test).permute(0, 2, 1)
+        self.y_train = torch.Tensor(self.y_train)
+        self.y_test = torch.LongTensor(self.y_test)
+        
+        self.train_dataset = TensorDataset(self.X_train_tensor, self.y_train_tensor)
+        self.train_loader = DataLoader(self.train_dataset, batch_size=batch_size, shuffle=True)
+        self.test_dataset = TensorDataset(self.X_test_tensor, self.y_test_tensor)
+        self.test_loader = DataLoader(self.test_dataset, batch_size=batch_size, shuffle=False)
