@@ -14,42 +14,45 @@ import torch.nn as nn
 import torch.optim as optim
 from torch.utils.data import DataLoader, TensorDataset
 
-def tune_autoencoder():
+def tune_autoencoder(optimal_grid=None):
     data = PreProcessing()
     data.pre_process_autoencoder()
 
     input_dim = data.X_train.shape[1]
 
-    autoencoder_grid = {
-        'type': ['autoencoder'],
-        'encoder_layer_sizes': [[32, 16, 8], [64, 32, 16], [128, 64, 32]],
-        # 'decoder_layer_sizes': [[32, 64, input_dim], [64, 128, input_dim]],
-        'learning_rate': [0.005, 0.01, 0.05],
-        'activation': [nn.ReLU(), nn.LeakyReLU()],
-        'optimizer': ['Adam'],
-        'criterion': ['MSELoss'],
-        'epochs': [200]
-    }
-    
+    if optimal_grid is None:
+        autoencoder_grid = {
+            'type': ['autoencoder'],
+            'encoder_layer_sizes': [[128, 64, 32]],
+            # 'decoder_layer_sizes': [[32, 64, input_dim], [64, 128, input_dim]],
+            'learning_rate': [0.01],
+            'learning_rate_classifier': [0.001, 0.005],
+            'activation': [nn.LeakyReLU()],
+            'optimizer': ['Adam'],
+            'criterion': ['MSELoss'],
+            'epochs': [300]
+        }
+        
     results, best_model = hyperparameter_tuning(autoencoder_grid, data)
     
     return results, best_model
 
-def tune_clstm():
+def tune_clstm(optimal_grid):
     data = PreProcessing()
     data.pre_process_clstm()
     
-    clstm_grid = {
-        'type': ['clstm'],
-        'conv1_out_channels': [32, 64],
-        'kernel_size': [3, 5],
-        'lstm_hidden_size': [32, 64],
-        'fc1_out_features': [16, 32],
-        'learning_rate': [0.001, 0.01],
-        'optimizer': ['Adam'], # SGD performed poorly
-        'criterion': ['BCELoss'],
-        'epochs': [100]
-    }
+    if optimal_grid is None:
+        clstm_grid = {
+            'type': ['clstm'],
+            'conv1_out_channels': [32, 64],
+            'kernel_size': [3, 5],
+            'lstm_hidden_size': [32, 64],
+            'fc1_out_features': [16, 32],
+            'learning_rate': [0.001, 0.01],
+            'optimizer': ['Adam'], # SGD performed poorly
+            'criterion': ['BCELoss'],
+            'epochs': [200]
+        }
     
     results, best_model = hyperparameter_tuning(clstm_grid, data)
     
@@ -72,10 +75,10 @@ def train_and_validate(data, model, params):
     # Optimizer
     if params['optimizer'] == 'SGD':
         optimizer = torch.optim.SGD(model.parameters(), lr=params['learning_rate'])
-        optimizer_classifier = torch.optim.SGD(model.parameters(), lr=params['learning_rate'])
+        optimizer_classifier = torch.optim.SGD(model.parameters(), lr=params['learning_rate_classifier'])
     else: # Adam
         optimizer = optim.Adam(model.parameters(), lr=params['learning_rate'])
-        optimizer_classifier = optim.Adam(model.parameters(), lr=params['learning_rate'])
+        optimizer_classifier = optim.Adam(model.parameters(), lr=params['learning_rate_classifier'])
         
     # Loss    
     if params['criterion'] == 'MSELoss':

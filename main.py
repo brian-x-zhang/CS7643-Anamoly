@@ -15,10 +15,8 @@ def main():
     # clstm_tuning_results, clstm_model = tune_clstm()
     autoencoder_tuning_results, autoencoder_model = tune_autoencoder()
 
-    writer = pd.ExcelWriter('HyperparameterTuning.xlsx')
-    # clstm_tuning_results.to_excel(writer, 'CLSTM')
-    autoencoder_tuning_results.to_excel(writer, 'Autoencoder')
-    writer.close()
+    # clstm_tuning_results.to_csv('clstm_tuning.csv')
+    autoencoder_tuning_results.to_csv('autoencoder_tuning.csv')
 
 if __name__ == "__main__":
     main()
