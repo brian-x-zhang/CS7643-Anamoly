@@ -26,7 +26,7 @@ def tune_autoencoder():
         # 'decoder_layer_sizes': [[32, 64, input_dim], [64, 128, input_dim]],
         'learning_rate': [0.001, 0.01],
         'optimizer': ['Adam'],
-        'criterion': ['MSELoss', 'BCELoss']
+        'criterion': ['MSELoss']
     }
     
     results, best_model = hyperparameter_tuning(autoencoder_grid, data)
@@ -157,8 +157,10 @@ def train_and_validate(data, model, params, epochs=100):
                 inputs = inputs.to(device)
                 outputs = model(inputs)
                 _, predicted = torch.max(outputs, 1)
+                
                 true_labels.extend(targets.cpu().numpy())
                 predicted_labels.extend(predicted.cpu().numpy())
+                
                 test_loss += loss.item() * inputs.size(0)
                 total_samples += inputs.size(0)
                 
@@ -178,7 +180,10 @@ def train_and_validate(data, model, params, epochs=100):
                 # Convert PyTorch tensors to NumPy arrays
                 predicted_labels.extend(predicted.cpu().numpy())
 
-
+                true_labels.extend(targets.cpu().numpy())
+                test_loss += loss.item() * inputs.size(0)
+                total_samples += inputs.size(0)
+                
     # Performance Metrics
     accuracy = accuracy_score(true_labels, predicted_labels)
     precision = precision_score(true_labels, predicted_labels)
