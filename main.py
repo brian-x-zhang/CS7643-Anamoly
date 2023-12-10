@@ -15,12 +15,12 @@ print = custom_print
 
 
 def main():
-    clstm_tuning_results, clstm_model = tune_clstm()
-    # autoencoder_tuning_results, autoencoder_model = tune_autoencoder()
+    # clstm_tuning_results, clstm_model = tune_clstm()
+    autoencoder_tuning_results, autoencoder_model = tune_autoencoder()
 
     writer = pd.ExcelWriter('HyperparameterTuning.xlsx')
-    clstm_tuning_results.to_excel(writer, 'CLSTM')
-    # autoencoder_tuning_results.to_excel(writer, 'Autoencoder')
+    # clstm_tuning_results.to_excel(writer, 'CLSTM')
+    autoencoder_tuning_results.to_excel(writer, 'Autoencoder')
     writer.close()
 
 if __name__ == "__main__":

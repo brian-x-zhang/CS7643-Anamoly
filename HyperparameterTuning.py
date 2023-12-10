@@ -26,7 +26,7 @@ def tune_autoencoder():
         'decoder_layer_sizes': [[32, 64, input_dim], [64, 128, input_dim]],
         'learning_rate': [0.001, 0.01],
         'optimizer': ['Adam'],
-        'criterion': ['MSELoss']
+        'criterion': ['MSELoss', 'BCELoss']
     }
     
     results, best_model = hyperparameter_tuning(autoencoder_grid, data)
