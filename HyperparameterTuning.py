@@ -200,7 +200,7 @@ def hyperparameter_tuning(hyperparams, data):
     for params in param_combinations:
         
         if params['type'] == 'autoencoder':
-            model = Autoencoder(data.X_train.shape[1], params['encoder_layer_sizes'], params['decoder_layer_sizes'])
+            model = Autoencoder(data.X_train.shape[1], params['encoder_layer_sizes'])
         else:
             model = CLSTM(params['conv1_out_channels'], params['kernel_size'], params['lstm_hidden_size'], params['fc1_out_features'])    
         
