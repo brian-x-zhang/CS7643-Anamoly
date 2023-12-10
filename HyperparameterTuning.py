@@ -69,7 +69,7 @@ def train_and_validate(data, model, params, epochs=100):
         optimizer_classifier = torch.optim.SGD(model.parameters(), lr=params['learning_rate'])
     else: # Adam
         optimizer = optim.Adam(model.parameters(), lr=params['learning_rate'])
-        optimizer_classiifer = optim.Adam(model.parameters(), lr=params['learning_rate'])
+        optimizer_classifier = optim.Adam(model.parameters(), lr=params['learning_rate'])
         
     # Loss    
     if params['criterion'] == 'MSELoss':
