@@ -13,7 +13,7 @@ class Autoencoder(nn.Module):
             layer_sizes = layer_sizes[::-1]  
         for size in layer_sizes:
             layers.append(nn.Linear(input_dim, size))
-            layers.append(activation())
+            layers.append(activation)
             input_dim = size
         return nn.Sequential(*layers)
 
