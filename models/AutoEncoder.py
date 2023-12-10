@@ -2,10 +2,10 @@ import torch
 import torch.nn as nn
 
 class Autoencoder(nn.Module):
-    def __init__(self, input_dim, encoder_layer_sizes):
+    def __init__(self, input_dim, encoder_layer_sizes, activation):
         super(Autoencoder, self).__init__()
-        self.encoder = self._generate_layers(input_dim, encoder_layer_sizes, nn.ReLU())
-        self.decoder = self._generate_layers(encoder_layer_sizes[-1], encoder_layer_sizes, nn.ReLU(), reverse=True)
+        self.encoder = self._generate_layers(input_dim, encoder_layer_sizes, activation)
+        self.decoder = self._generate_layers(encoder_layer_sizes[-1], encoder_layer_sizes, activation, reverse=True)
 
     def _generate_layers(self, input_dim, layer_sizes, activation, reverse=False):
         layers = []

@@ -22,9 +22,10 @@ def tune_autoencoder():
 
     autoencoder_grid = {
         'type': ['autoencoder'],
-        'encoder_layer_sizes': [[64, 32, 16], [128, 64, 32]],
+        'encoder_layer_sizes': [[32, 16, 8], [64, 32, 16], [128, 64, 32]],
         # 'decoder_layer_sizes': [[32, 64, input_dim], [64, 128, input_dim]],
         'learning_rate': [0.001, 0.01],
+        'activation': [nn.ReLU(), nn.LeakyReLU()],
         'optimizer': ['Adam'],
         'criterion': ['MSELoss']
     }
@@ -205,7 +206,7 @@ def hyperparameter_tuning(hyperparams, data):
     for params in param_combinations:
         
         if params['type'] == 'autoencoder':
-            model = Autoencoder(data.X_train.shape[1], params['encoder_layer_sizes'])
+            model = Autoencoder(data.X_train.shape[1], params['encoder_layer_sizes'], params['activation'])
         else:
             model = CLSTM(params['conv1_out_channels'], params['kernel_size'], params['lstm_hidden_size'], params['fc1_out_features'])    
         
