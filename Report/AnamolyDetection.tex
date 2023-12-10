@@ -105,7 +105,11 @@ The real portion of the dataset is made up of the web traffic metrics of various
 \section{Approach}
 
 \subsection{Pre-processing}
-First, we applied pre-processing steps and exploratory analysis to the data. We focused on the A1 part of the Yahoo dataset that consists of the real web traffic with manual human-applied labels for anomalies. It is presented in 67 separate files with traffic measures from various Yahoo web services and anomaly data. The data in this dataset is represented by a time series of traffic measurement values from actual web series in one hour units. Since the labeling was manually done, there is potential for some inconsistency in data.The traffic also presents a high level of variability.  The data from 67 files was concatenated for training, values were normalized and any values in traffic data that were equal to zero were dropped. 
+First, we applied pre-processing steps and exploratory analysis to the data. We focused on the A1 part of the Yahoo dataset that consists of the real web 
+traffic with manual human-applied labels for anomalies. It is presented in 67 separate files with traffic measures from various Yahoo web services and anomaly 
+data. The data in this dataset is represented by a time series of traffic measurement values from actual web series in one hour units. 
+Since the labeling was manually done, there is potential for some inconsistency in data.The traffic also presents a high level of variability.  
+The data from 67 files was concatenated for training, values were normalized and any values in traffic data that were equal to zero were dropped. 
 Normalizing data was important as it ensured that we didn’t have features with larger scales or variances that could dominate the learning process. 
 The values were normalized using the Euclidean norm. This was achieved using the preprocessing.normalize function available in scikit-learn in Python. The resulting normalized has each row scaled such that the Euclidean norm (the square root of the sum of squares of each element) of each row is 1. 
 The normalized web-traffic timeseries data is shown in Figure \ref*{pre-process-web-traffic}. 
@@ -192,9 +196,7 @@ gradients.
 As part of optimizing the C-LSTM and autoencoder models, we employed a detailed hyperparameter tuning framework designed to optimize the performance of both Convolutional Long Short-Term Memory (C-LSTM) 
 and Autoencoder models. This framework is pivotal in determining the most effective configurations for our models, ensuring they are finely tuned for the specific tasks of feature 
 representation and anomaly detection. We adopted a systematic approach to explore a wide range of hyperparameters, including but not limited to, layer dimensions, learning rates, and activation functions. 
-The range of tuning parameters for each model are shown is shown in Figure \ref*{clstm-tuning-matrix} and Figure \ref*{autoenc-tuning-matrix}
-
-
+The range of tuning parameters for the C-LSTM and Autoencoder models are shown is shown in Figure \ref*{clstm-tuning-matrix} and Figure \ref*{autoenc-tuning-matrix}, respectively.
 
 \begin{table}[h]
    \centering
@@ -208,7 +210,7 @@ The range of tuning parameters for each model are shown is shown in Figure \ref*
    LSTM Hidden Size          & 16, 32                  \\ \hline
    FC1 Output Features       & 4, 16, 32               \\ \hline
    Learning Rate             & 0.001, 0.01             \\ \hline
-   Optimizer                 & Adam, SGD               \\ \hline
+   Optimizer                 & Adam             \\ \hline
    Criterion                 & BCELoss                 \\ \hline
    Epochs                    & 200                     \\ \hline
    \end{tabular}
@@ -221,9 +223,9 @@ The range of tuning parameters for each model are shown is shown in Figure \ref*
       \begin{tabular}{|l|l|}
       \hline
       \textbf{Hyperparameter}               & \textbf{Values}                                 \\ \hline
-      Encoder Layer Sizes                   & [32, 16, 8] \\ [64, 32, 16] \\[128, 64, 32]     \\ \hline
-      Learning Rate (Autoencoder)           & 0.001, 0.01, 0.05                               \\ \hline
-      Learning Rate (Classifier)            & 0.0005, 0.001, 0.005                            \\ \hline
+      Encoder Layer Sizes                   & \small{[32,16,8],[64,32,16],[128,64,32]}       \\ \hline
+      \small{Autoencoder Learning Rate}           & 0.001, 0.01, 0.05                               \\ \hline
+      \small{Classifier Learning Rate}            & 0.0005, 0.001, 0.005                            \\ \hline
       Activation                            & LeakyReLU, ReLU                                 \\ \hline
       Optimizer                             & Adam                                            \\ \hline
       Criterion                             & MSELoss                                         \\ \hline
@@ -231,11 +233,28 @@ The range of tuning parameters for each model are shown is shown in Figure \ref*
       \end{tabular}
       \end{table}
 
+For the C-LSTM model, hyperparameter tuning focused on its unique architecture that combines convolutional layers with LSTM units. 
+Key hyperparameters include the number and size of convolutional filters, kernel sizes, the number of LSTM units, and the architecture of fully connected layers. 
+Given the sequential nature of our data, special attention was given to the size of the LSTM units, which play a crucial role in capturing temporal dependencies.
+The convolutional layers were fine-tuned to effectively extract spatial features before they were fed into the LSTM units. The learning rate was also 
+adjusted to balance the speed and stability of the training process.
+
+For the autoencoder tuning focused on the encoder and decoder's layer sizes and the activation functions used. The depth and breadth of these layers were 
+especially important in determining the model's ability to compress and reconstruct the input data effectively. The leaky ReLU actiation function was tested
+in addition to the original ReLU activation, as it was hypothesized that outliers we are seeking to focus on in an anomaly detection problem may be better 
+represented by allowing a small gradient for negative values (over the dead-neurons at the zero-cutoff for ReLU).
+
+\section*{Experiments and Results}
+The dataset we had is highly imbalanced. It's important to note that while the accuracy metric is commonly used, its reliability can be 
+compromised in the presence of imbalanced datasets. For instance, if anomalies are significantly outnumbered by normal cases, a high overall 
+accuracy may be misleading. In the context of anomaly detection, the actual detection of anomalies becomes crucial.
+In this scenario, precision, recall, and F1-score metrics can provide a more nuanced evaluation of the model's performance. 
+Precision evaluates the accuracy of positive predictions, recall assesses the model's ability to capture all actual positives, and the F1-score 
+balances precision and recall. These metrics are particularly useful for addressing class imbalance and providing a more comprehensive understanding of 
+the model's strengths and weaknesses.
+
+\subsection*{Experiments}
 %-------------------------------------------------------------------------
-
-\section{Team Contributions}
-Contributions by individual team members for this project are described below. 
-
 \begin{table*}
 \begin{tabular}{|l|c|p{6cm}|}
 \hline
@@ -244,7 +263,7 @@ Student Name & Contributed Aspects & Details \\
 Lily Chebotarova            & C-LSTM and initial research  & Researched labelled anomaly detection datasets and found selected Yahoo dataset for project. Developed C-LSTM model implementation code \(anomalydetection.ipynb\). \\ \hline 
 Raga Lasya Munagala         & Pre-processing & Developed data pre-processing code \(data\_preprocessing.ipynb\). \\ \hline
 Ligeng Peng                 & Auto-encoder with Regression  & Developed autoencoder with regression model implementation code \(anomaly\_detection\_encoder.ipynb\). \\ \hline
-Brian Zhang                 & Hyperparmater Tuning, Model Evaluation, and Report Writing  & Performed hyperparameter tuning of Auto-encoder model. Authored ModelEvaluation.py script to evaluate both models. Primary author for text of report itself outside of autoencoder and C-LSTM sections describing model architecture and training (handled all LaTeX formatting). Created and maintained team git repo: \url{https://github.com/brian-x-zhang/CS7643-Anamoly}. \\ \hline
+Brian Zhang                 & Hyperparamater Tuning, Overall Report and LaTeX  & Performed hyperparameter tuning of both models. Trained final models and evaluated results. Responsible for all LaTeX compilation and overal report format/organization. Primary author for abstract, introduction. Created and maintained team git repo: \url{https://github.com/brian-x-zhang/CS7643-Anamoly}. \\ \hline
 \hline
 \end{tabular}
 \caption{Contributions of team members.}
