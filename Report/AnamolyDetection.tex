@@ -6,7 +6,7 @@
 \usepackage{graphicx}
 \usepackage{amsmath}
 \usepackage{amssymb}
-
+\usepackage{appendix}
 % Include other packages here, before hyperref.
 
 % If you comment hyperref and then uncomment it, you should delete
@@ -296,33 +296,156 @@ The effectiveness of anomaly detection will be assessed in conjunction with the 
 The dataset exhibits a significant class imbalance, with the majority being normal network instances, while accurate anomaly detection remains crucial. 
 Despite our attempt to address this through the window sliding method for balancing the dataset, an alternative strategy involves selectively omitting some normal data. 
 This approach aims to enhance accuracy in identifying anomaly data points by mitigating the impact of the dominant normal class.
-
-
 %-------------------------------------------------------------------------
-\begin{table*}
-\begin{tabular}{|l|c|p{6cm}|}
-\hline
-Student Name & Contributed Aspects & Details \\
-\hline\hline
-Lily Chebotarova            & C-LSTM and initial research  & Researched labelled anomaly detection datasets and found selected Yahoo dataset for project. Developed C-LSTM model implementation code \(anomalydetection.ipynb\). \\ \hline 
-Raga Lasya Munagala         & Pre-processing & Developed data pre-processing code \(data\_preprocessing.ipynb\). \\ \hline
-Ligeng Peng                 & Auto-encoder with Regression  & Developed autoencoder with regression model implementation code \(anomaly\_detection\_encoder.ipynb\). \\ \hline
-Brian Zhang                 & Hyperparamater Tuning, Overall Report and LaTeX  & Performed hyperparameter tuning of both models. Trained final models and evaluated results. Responsible for LaTeX compilation and overall report format/organization. Primary author for abstract, introduction. Created and maintained team git repo: \url{https://github.com/brian-x-zhang/CS7643-Anamoly}. \\ \hline
-\hline
-\end{tabular}
-\caption{Contributions of team members.}
-\label{tab:contributions}
-\end{table*}
-
-
-%-------------------------------------------------------------------------
-
-
 {\small
 \bibliographystyle{ieee_fullname}
 \bibliography{egbib}
 }
 
-\section{Loss}
+%-------------------------------------------------------------------------
+\newpage
+\onecolumn
+\begin{appendices}
+
+   \begin{table}
+   \begin{tabular}{|l|c|p{6cm}|}
+   \hline
+   Student Name & Contributed Aspects & Details \\
+   \hline\hline
+   Lily Chebotarova            & C-LSTM and initial research  & Researched labelled anomaly detection datasets and found selected Yahoo dataset for project. Developed C-LSTM model implementation code \(anomalydetection.ipynb\). \\ \hline 
+   Raga Lasya Munagala         & Pre-processing & Developed data pre-processing code \(data\_preprocessing.ipynb\). \\ \hline
+   Ligeng Peng                 & Auto-encoder with Regression  & Developed autoencoder with regression model implementation code \(anomaly\_detection\_encoder.ipynb\). \\ \hline
+   Brian Zhang                 & Hyperparamater Tuning, Overall Report and LaTeX  & Performed hyperparameter tuning of both models. Trained final models and evaluated results. Responsible for LaTeX compilation and overall report format/organization. Primary author for abstract, introduction. Created and maintained team git repo: \url{https://github.com/brian-x-zhang/CS7643-Anamoly}. \\ \hline
+   \hline
+   \end{tabular}
+   \caption{Contributions of team members}
+   \label{tab:contributions}
+   \end{table}
+
+
+\section{Hyperparameter Tuning Results}
+   \tiny
+
+   \begin{center}
+   \begin{tabular}{llrrlllrrrrr}
+      \hline
+      type & encoder\_layer\_sizes & learning\_rate & learning\_rate\_classifier & activation & optimizer & criterion & epochs & F1 & Accuracy & Recall & Precision \\
+      \hline
+      autoencoder & [128, 64, 32] & 0.010000 & 0.005000 & ReLU() & Adam & MSELoss & 200 & 0.528876 & 0.903117 & 0.418212 & 0.719181 \\
+      autoencoder & [32, 16, 8] & 0.001000 & 0.005000 & LeakyReLU(negative\_slope=0.01) & Adam & MSELoss & 200 & 0.514819 & 0.904556 & 0.389427 & 0.759309 \\
+      autoencoder & [32, 16, 8] & 0.001000 & 0.001000 & ReLU() & Adam & MSELoss & 200 & 0.501046 & 0.905600 & 0.364517 & 0.801095 \\
+      autoencoder & [32, 16, 8] & 0.001000 & 0.001000 & LeakyReLU(negative\_slope=0.01) & Adam & MSELoss & 200 & 0.478569 & 0.899302 & 0.355383 & 0.732459 \\
+      autoencoder & [128, 64, 32] & 0.001000 & 0.001000 & LeakyReLU(negative\_slope=0.01) & Adam & MSELoss & 200 & 0.447730 & 0.904556 & 0.297537 & 0.904121 \\
+      autoencoder & [128, 64, 32] & 0.010000 & 0.000500 & LeakyReLU(negative\_slope=0.01) & Adam & MSELoss & 200 & 0.436072 & 0.898726 & 0.301135 & 0.790123 \\
+      autoencoder & [32, 16, 8] & 0.010000 & 0.001000 & ReLU() & Adam & MSELoss & 200 & 0.432758 & 0.898294 & 0.298367 & 0.787436 \\
+      autoencoder & [32, 16, 8] & 0.010000 & 0.001000 & LeakyReLU(negative\_slope=0.01) & Adam & MSELoss & 200 & 0.423208 & 0.896603 & 0.291724 & 0.770468 \\
+      autoencoder & [128, 64, 32] & 0.010000 & 0.001000 & ReLU() & Adam & MSELoss & 200 & 0.406534 & 0.896711 & 0.272073 & 0.803761 \\
+      autoencoder & [128, 64, 32] & 0.010000 & 0.000500 & ReLU() & Adam & MSELoss & 200 & 0.332598 & 0.891096 & 0.208691 & 0.818675 \\
+      autoencoder & [64, 32, 16] & 0.001000 & 0.001000 & LeakyReLU(negative\_slope=0.01) & Adam & MSELoss & 200 & 0.313806 & 0.891240 & 0.191254 & 0.873578 \\
+      autoencoder & [64, 32, 16] & 0.010000 & 0.000500 & ReLU() & Adam & MSELoss & 200 & 0.309910 & 0.889729 & 0.190423 & 0.831923 \\
+      autoencoder & [64, 32, 16] & 0.010000 & 0.001000 & LeakyReLU(negative\_slope=0.01) & Adam & MSELoss & 200 & 0.304126 & 0.598143 & 0.675339 & 0.196252 \\
+      autoencoder & [32, 16, 8] & 0.001000 & 0.000500 & LeakyReLU(negative\_slope=0.01) & Adam & MSELoss & 200 & 0.260186 & 0.888253 & 0.151121 & 0.934932 \\
+      autoencoder & [64, 32, 16] & 0.010000 & 0.001000 & ReLU() & Adam & MSELoss & 200 & 0.259613 & 0.885662 & 0.154166 & 0.821534 \\
+      autoencoder & [64, 32, 16] & 0.010000 & 0.005000 & LeakyReLU(negative\_slope=0.01) & Adam & MSELoss & 200 & 0.245145 & 0.385842 & 0.766953 & 0.145888 \\
+      autoencoder & [128, 64, 32] & 0.010000 & 0.005000 & LeakyReLU(negative\_slope=0.01) & Adam & MSELoss & 200 & 0.238841 & 0.202188 & 0.962635 & 0.136333 \\
+      autoencoder & [32, 16, 8] & 0.050000 & 0.000500 & ReLU() & Adam & MSELoss & 200 & 0.230135 & 0.130030 & 1.000000 & 0.130030 \\
+      autoencoder & [64, 32, 16] & 0.050000 & 0.000500 & LeakyReLU(negative\_slope=0.01) & Adam & MSELoss & 200 & 0.230135 & 0.130030 & 1.000000 & 0.130030 \\
+      autoencoder & [64, 32, 16] & 0.050000 & 0.001000 & LeakyReLU(negative\_slope=0.01) & Adam & MSELoss & 200 & 0.230135 & 0.130030 & 1.000000 & 0.130030 \\
+      autoencoder & [64, 32, 16] & 0.050000 & 0.005000 & LeakyReLU(negative\_slope=0.01) & Adam & MSELoss & 200 & 0.230135 & 0.130030 & 1.000000 & 0.130030 \\
+      autoencoder & [128, 64, 32] & 0.050000 & 0.005000 & LeakyReLU(negative\_slope=0.01) & Adam & MSELoss & 200 & 0.230135 & 0.130030 & 1.000000 & 0.130030 \\
+      autoencoder & [128, 64, 32] & 0.010000 & 0.001000 & LeakyReLU(negative\_slope=0.01) & Adam & MSELoss & 200 & 0.227303 & 0.540236 & 0.520066 & 0.145433 \\
+      autoencoder & [32, 16, 8] & 0.010000 & 0.005000 & ReLU() & Adam & MSELoss & 200 & 0.202166 & 0.443245 & 0.542485 & 0.124231 \\
+      autoencoder & [64, 32, 16] & 0.001000 & 0.001000 & ReLU() & Adam & MSELoss & 200 & 0.198317 & 0.670913 & 0.313036 & 0.145130 \\
+      autoencoder & [32, 16, 8] & 0.010000 & 0.005000 & LeakyReLU(negative\_slope=0.01) & Adam & MSELoss & 200 & 0.189957 & 0.400849 & 0.540271 & 0.115237 \\
+      autoencoder & [64, 32, 16] & 0.001000 & 0.000500 & LeakyReLU(negative\_slope=0.01) & Adam & MSELoss & 200 & 0.168347 & 0.881235 & 0.092444 & 0.940845 \\
+      autoencoder & [64, 32, 16] & 0.001000 & 0.005000 & LeakyReLU(negative\_slope=0.01) & Adam & MSELoss & 200 & 0.151977 & 0.485100 & 0.354830 & 0.096696 \\
+      autoencoder & [64, 32, 16] & 0.010000 & 0.005000 & ReLU() & Adam & MSELoss & 200 & 0.147761 & 0.519254 & 0.320509 & 0.096012 \\
+      autoencoder & [32, 16, 8] & 0.001000 & 0.005000 & ReLU() & Adam & MSELoss & 200 & 0.132365 & 0.548478 & 0.264877 & 0.088227 \\
+      autoencoder & [32, 16, 8] & 0.010000 & 0.000500 & ReLU() & Adam & MSELoss & 200 & 0.056959 & 0.873677 & 0.029338 & 0.972477 \\
+      autoencoder & [64, 32, 16] & 0.001000 & 0.005000 & ReLU() & Adam & MSELoss & 200 & 0.028868 & 0.527820 & 0.053972 & 0.019703 \\
+      autoencoder & [64, 32, 16] & 0.001000 & 0.000500 & ReLU() & Adam & MSELoss & 200 & 0.015359 & 0.870798 & 0.007750 & 0.848485 \\
+      autoencoder & [128, 64, 32] & 0.001000 & 0.000500 & LeakyReLU(negative\_slope=0.01) & Adam & MSELoss & 200 & 0.002764 & 0.870150 & 0.001384 & 1.000000 \\
+      autoencoder & [32, 16, 8] & 0.001000 & 0.000500 & ReLU() & Adam & MSELoss & 200 & 0.000000 & 0.869970 & 0.000000 & 0.000000 \\
+      autoencoder & [32, 16, 8] & 0.010000 & 0.000500 & LeakyReLU(negative\_slope=0.01) & Adam & MSELoss & 200 & 0.000000 & 0.869970 & 0.000000 & 0.000000 \\
+      autoencoder & [32, 16, 8] & 0.050000 & 0.000500 & LeakyReLU(negative\_slope=0.01) & Adam & MSELoss & 200 & 0.000000 & 0.869970 & 0.000000 & 0.000000 \\
+      autoencoder & [32, 16, 8] & 0.050000 & 0.001000 & LeakyReLU(negative\_slope=0.01) & Adam & MSELoss & 200 & 0.000000 & 0.869970 & 0.000000 & 0.000000 \\
+      autoencoder & [32, 16, 8] & 0.050000 & 0.001000 & ReLU() & Adam & MSELoss & 200 & 0.000000 & 0.869970 & 0.000000 & 0.000000 \\
+      autoencoder & [32, 16, 8] & 0.050000 & 0.005000 & LeakyReLU(negative\_slope=0.01) & Adam & MSELoss & 200 & 0.000000 & 0.869970 & 0.000000 & 0.000000 \\
+      autoencoder & [32, 16, 8] & 0.050000 & 0.005000 & ReLU() & Adam & MSELoss & 200 & 0.000000 & 0.869970 & 0.000000 & 0.000000 \\
+      autoencoder & [64, 32, 16] & 0.010000 & 0.000500 & LeakyReLU(negative\_slope=0.01) & Adam & MSELoss & 200 & 0.000000 & 0.869970 & 0.000000 & 0.000000 \\
+      autoencoder & [64, 32, 16] & 0.050000 & 0.000500 & ReLU() & Adam & MSELoss & 200 & 0.000000 & 0.869970 & 0.000000 & 0.000000 \\
+      autoencoder & [64, 32, 16] & 0.050000 & 0.001000 & ReLU() & Adam & MSELoss & 200 & 0.000000 & 0.869970 & 0.000000 & 0.000000 \\
+      autoencoder & [64, 32, 16] & 0.050000 & 0.005000 & ReLU() & Adam & MSELoss & 200 & 0.000000 & 0.869970 & 0.000000 & 0.000000 \\
+      autoencoder & [128, 64, 32] & 0.001000 & 0.000500 & ReLU() & Adam & MSELoss & 200 & 0.000000 & 0.869970 & 0.000000 & 0.000000 \\
+      autoencoder & [128, 64, 32] & 0.001000 & 0.001000 & ReLU() & Adam & MSELoss & 200 & 0.000000 & 0.869970 & 0.000000 & 0.000000 \\
+      autoencoder & [128, 64, 32] & 0.001000 & 0.005000 & LeakyReLU(negative\_slope=0.01) & Adam & MSELoss & 200 & 0.000000 & 0.869970 & 0.000000 & 0.000000 \\
+      autoencoder & [128, 64, 32] & 0.001000 & 0.005000 & ReLU() & Adam & MSELoss & 200 & 0.000000 & 0.869970 & 0.000000 & 0.000000 \\
+      autoencoder & [128, 64, 32] & 0.050000 & 0.000500 & LeakyReLU(negative\_slope=0.01) & Adam & MSELoss & 200 & 0.000000 & 0.869970 & 0.000000 & 0.000000 \\
+      autoencoder & [128, 64, 32] & 0.050000 & 0.000500 & ReLU() & Adam & MSELoss & 200 & 0.000000 & 0.869970 & 0.000000 & 0.000000 \\
+      autoencoder & [128, 64, 32] & 0.050000 & 0.001000 & LeakyReLU(negative\_slope=0.01) & Adam & MSELoss & 200 & 0.000000 & 0.869970 & 0.000000 & 0.000000 \\
+      autoencoder & [128, 64, 32] & 0.050000 & 0.001000 & ReLU() & Adam & MSELoss & 200 & 0.000000 & 0.869970 & 0.000000 & 0.000000 \\
+      autoencoder & [128, 64, 32] & 0.050000 & 0.005000 & ReLU() & Adam & MSELoss & 200 & 0.000000 & 0.869970 & 0.000000 & 0.000000 \\
+      \end{tabular}
+   \end{center}
+
+\begin{center}
+   \begin{tabular}{ |c|c|c|c|c|c|c|c|c|c|c|c|c| }
+      \hline
+      type & conv1\_out\_channels & kernel\_size & lstm\_hidden\_size & fc1\_out\_features & learning\_rate & optimizer & criterion & epochs & F1 & Accuracy & Recall & Precision \\
+      \hline
+         clstm & 16 & 3 & 16 & 4 & 0.001000 & Adam & BCELoss & 200 & 0.609093 & 0.898510 & 0.608082 & 0.610108 \\
+         clstm & 16 & 3 & 16 & 4 & 0.010000 & Adam & BCELoss & 200 & 0.000000 & 0.869970 & 0.000000 & 0.000000 \\
+         clstm & 16 & 3 & 16 & 16 & 0.001000 & Adam & BCELoss & 200 & 0.599922 & 0.889261 & 0.638528 & 0.565718 \\
+         clstm & 16 & 3 & 16 & 16 & 0.010000 & Adam & BCELoss & 200 & 0.000000 & 0.869970 & 0.000000 & 0.000000 \\
+         clstm & 16 & 3 & 16 & 32 & 0.001000 & Adam & BCELoss & 200 & 0.596846 & 0.882243 & 0.670357 & 0.537864 \\
+         clstm & 16 & 3 & 16 & 32 & 0.010000 & Adam & BCELoss & 200 & 0.000000 & 0.869970 & 0.000000 & 0.000000 \\
+         clstm & 16 & 3 & 32 & 4 & 0.001000 & Adam & BCELoss & 200 & 0.615864 & 0.897862 & 0.629671 & 0.602649 \\
+         clstm & 16 & 3 & 32 & 4 & 0.010000 & Adam & BCELoss & 200 & 0.000000 & 0.869970 & 0.000000 & 0.000000 \\
+         clstm & 16 & 3 & 32 & 16 & 0.001000 & Adam & BCELoss & 200 & 0.615240 & 0.896962 & 0.633546 & 0.597962 \\
+         clstm & 16 & 3 & 32 & 16 & 0.010000 & Adam & BCELoss & 200 & 0.680727 & 0.913374 & 0.710213 & 0.653591 \\
+         clstm & 16 & 3 & 32 & 32 & 0.001000 & Adam & BCELoss & 200 & 0.624002 & 0.894911 & 0.670634 & 0.583434 \\
+         clstm & 16 & 3 & 32 & 32 & 0.010000 & Adam & BCELoss & 200 & 0.000000 & 0.869970 & 0.000000 & 0.000000 \\
+         clstm & 16 & 5 & 16 & 4 & 0.001000 & Adam & BCELoss & 200 & 0.645031 & 0.905132 & 0.662884 & 0.628114 \\
+         clstm & 16 & 5 & 16 & 4 & 0.010000 & Adam & BCELoss & 200 & 0.000000 & 0.869970 & 0.000000 & 0.000000 \\
+         clstm & 16 & 5 & 16 & 16 & 0.001000 & Adam & BCELoss & 200 & 0.599451 & 0.889765 & 0.634376 & 0.568171 \\
+         clstm & 16 & 5 & 16 & 16 & 0.010000 & Adam & BCELoss & 200 & 0.000000 & 0.869970 & 0.000000 & 0.000000 \\
+         clstm & 16 & 5 & 16 & 32 & 0.001000 & Adam & BCELoss & 200 & 0.614854 & 0.895487 & 0.641572 & 0.590272 \\
+         clstm & 16 & 5 & 16 & 32 & 0.010000 & Adam & BCELoss & 200 & 0.699175 & 0.914741 & 0.761971 & 0.645941 \\
+         clstm & 16 & 5 & 32 & 4 & 0.001000 & Adam & BCELoss & 200 & 0.607578 & 0.893400 & 0.634653 & 0.582719 \\
+         clstm & 16 & 5 & 32 & 4 & 0.010000 & Adam & BCELoss & 200 & 0.000000 & 0.869970 & 0.000000 & 0.000000 \\
+         clstm & 16 & 5 & 32 & 16 & 0.001000 & Adam & BCELoss & 200 & 0.582443 & 0.884618 & 0.618876 & 0.550062 \\
+         clstm & 16 & 5 & 32 & 16 & 0.010000 & Adam & BCELoss & 200 & 0.000000 & 0.869970 & 0.000000 & 0.000000 \\
+         clstm & 16 & 5 & 32 & 32 & 0.001000 & Adam & BCELoss & 200 & 0.634360 & 0.900885 & 0.661223 & 0.609594 \\
+         clstm & 16 & 5 & 32 & 32 & 0.010000 & Adam & BCELoss & 200 & 0.674369 & 0.911754 & 0.702740 & 0.648200 \\
+         clstm & 32 & 3 & 16 & 4 & 0.001000 & Adam & BCELoss & 200 & 0.638962 & 0.900885 & 0.674509 & 0.606974 \\
+         clstm & 32 & 3 & 16 & 4 & 0.010000 & Adam & BCELoss & 200 & 0.000000 & 0.869970 & 0.000000 & 0.000000 \\
+         clstm & 32 & 3 & 16 & 16 & 0.001000 & Adam & BCELoss & 200 & 0.650304 & 0.902577 & 0.696651 & 0.609738 \\
+         clstm & 32 & 3 & 16 & 16 & 0.010000 & Adam & BCELoss & 200 & 0.000000 & 0.869970 & 0.000000 & 0.000000 \\
+         clstm & 32 & 3 & 16 & 32 & 0.001000 & Adam & BCELoss & 200 & 0.643100 & 0.897898 & 0.707445 & 0.589483 \\
+         clstm & 32 & 3 & 16 & 32 & 0.010000 & Adam & BCELoss & 200 & 0.000000 & 0.869970 & 0.000000 & 0.000000 \\
+         clstm & 32 & 3 & 32 & 4 & 0.001000 & Adam & BCELoss & 200 & 0.626528 & 0.897754 & 0.659563 & 0.596645 \\
+         clstm & 32 & 3 & 32 & 4 & 0.010000 & Adam & BCELoss & 200 & 0.000000 & 0.869970 & 0.000000 & 0.000000 \\
+         clstm & 32 & 3 & 32 & 16 & 0.001000 & Adam & BCELoss & 200 & 0.646150 & 0.900274 & 0.700249 & 0.599810 \\
+         clstm & 32 & 3 & 32 & 16 & 0.010000 & Adam & BCELoss & 200 & 0.000000 & 0.869970 & 0.000000 & 0.000000 \\
+         clstm & 32 & 3 & 32 & 32 & 0.001000 & Adam & BCELoss & 200 & 0.622211 & 0.892752 & 0.679214 & 0.574035 \\
+         clstm & 32 & 3 & 32 & 32 & 0.010000 & Adam & BCELoss & 200 & 0.000000 & 0.869970 & 0.000000 & 0.000000 \\
+         clstm & 32 & 5 & 16 & 4 & 0.001000 & Adam & BCELoss & 200 & 0.636823 & 0.901605 & 0.663438 & 0.612261 \\
+         clstm & 32 & 5 & 16 & 4 & 0.010000 & Adam & BCELoss & 200 & 0.000000 & 0.869970 & 0.000000 & 0.000000 \\
+         clstm & 32 & 5 & 16 & 16 & 0.001000 & Adam & BCELoss & 200 & 0.635312 & 0.896747 & 0.691669 & 0.587447 \\
+         clstm & 32 & 5 & 16 & 16 & 0.010000 & Adam & BCELoss & 200 & 0.000000 & 0.869970 & 0.000000 & 0.000000 \\
+         clstm & 32 & 5 & 16 & 32 & 0.001000 & Adam & BCELoss & 200 & 0.627376 & 0.894191 & 0.685026 & 0.578677 \\
+         clstm & 32 & 5 & 16 & 32 & 0.010000 & Adam & BCELoss & 200 & 0.000000 & 0.869970 & 0.000000 & 0.000000 \\
+         clstm & 32 & 5 & 32 & 4 & 0.001000 & Adam & BCELoss & 200 & 0.628121 & 0.898150 & 0.661500 & 0.597948 \\
+         clstm & 32 & 5 & 32 & 4 & 0.010000 & Adam & BCELoss & 200 & 0.000000 & 0.869970 & 0.000000 & 0.000000 \\
+         clstm & 32 & 5 & 32 & 16 & 0.001000 & Adam & BCELoss & 200 & 0.622782 & 0.894407 & 0.670357 & 0.581513 \\
+         clstm & 32 & 5 & 32 & 16 & 0.010000 & Adam & BCELoss & 200 & 0.000000 & 0.869970 & 0.000000 & 0.000000 \\
+         clstm & 32 & 5 & 32 & 32 & 0.001000 & Adam & BCELoss & 200 & 0.648635 & 0.903225 & 0.686964 & 0.614356 \\
+         clstm & 32 & 5 & 32 & 32 & 0.010000 & Adam & BCELoss & 200 & 0.000000 & 0.869970 & 0.000000 & 0.000000 \\
+      \hline
+   \end{tabular} 
+   \end{center}
+
+\end{appendices}
+%-------------------------------------------------------------------------
 
 \end{document}
