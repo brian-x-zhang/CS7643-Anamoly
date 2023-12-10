@@ -14,13 +14,13 @@ import torch.nn as nn
 import torch.optim as optim
 from torch.utils.data import DataLoader, TensorDataset
 
-def tune_autoencoder(optimal_grid=None):
+def tune_autoencoder(autoencoder_grid=None):
     data = PreProcessing()
     data.pre_process_autoencoder()
 
     input_dim = data.X_train.shape[1]
 
-    if optimal_grid is None:
+    if autoencoder_grid is None:
         autoencoder_grid = {
             'type': ['autoencoder'],
             'encoder_layer_sizes': [[128, 64, 32]],
@@ -37,11 +37,11 @@ def tune_autoencoder(optimal_grid=None):
     
     return results, best_model
 
-def tune_clstm(optimal_grid):
+def tune_clstm(clstm_grid):
     data = PreProcessing()
     data.pre_process_clstm()
     
-    if optimal_grid is None:
+    if clstm_grid is None:
         clstm_grid = {
             'type': ['clstm'],
             'conv1_out_channels': [32, 64],
@@ -174,6 +174,7 @@ def train_and_validate(data, model, params):
                 total_samples += inputs.size(0)
                 
         elif params['type'] == 'autoencoder':
+            probs = []
             for inputs, targets in data.test_loader:
                 inputs, targets = inputs.to(device), targets.to(device)
 
@@ -182,7 +183,8 @@ def train_and_validate(data, model, params):
 
                 # Pass encoded features through the classifier
                 outputs = classifier(encoded_features)
-
+                probs.extend(outputs)
+                
                 # Assuming binary classification
                 predicted = (outputs > 0.5).float()
 
@@ -192,7 +194,7 @@ def train_and_validate(data, model, params):
                 true_labels.extend(targets.cpu().numpy())
                 test_loss += loss.item() * inputs.size(0)
                 total_samples += inputs.size(0)
-                
+    
     # Performance Metrics
     accuracy = accuracy_score(true_labels, predicted_labels)
     precision = precision_score(true_labels, predicted_labels)
@@ -247,3 +249,22 @@ def hyperparameter_tuning(hyperparams, data):
     results = pd.DataFrame(results)
     
     return results, best_model
+
+def find_best_threshold(y_true, y_probs):
+    best_threshold = 0.5
+    best_f1 = 0.0
+
+    # Iterate through a range of possible threshold values
+    for threshold in np.arange(0.0, 1.01, 0.01):
+        # Convert probabilities to binary predictions based on the current threshold
+        y_pred = (y_probs >= threshold).astype(int)
+        
+        # Calculate the F1 score
+        f1 = f1_score(y_true, y_pred)
+        
+        # Update the best threshold if this one is better
+        if f1 > best_f1:
+            best_f1 = f1
+            best_threshold = threshold
+
+    return best_threshold, best_f1
