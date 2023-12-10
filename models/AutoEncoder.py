@@ -16,6 +16,7 @@ class Autoencoder(nn.Module):
             layers.append(nn.Linear(input_dim, size))
             layers.append(activation)
             input_dim = size
+        layers = layers[0:-1]
         return nn.Sequential(*layers)
 
     def forward(self, x):
@@ -27,7 +28,7 @@ class Classifier(nn.Module):
     def __init__(self, encoder):
         super(Classifier, self).__init__()
         self.encoder = encoder
-        self.fc = nn.Linear(self.encoder[-2].out_features, 1)
+        self.fc = nn.Linear(self.encoder[-1].out_features, 1)
 
     def forward(self, x):
         x = self.encoder(x)

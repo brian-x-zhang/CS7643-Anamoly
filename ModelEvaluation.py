@@ -20,7 +20,7 @@ clstm_params = {
 
 autoencoder_grid = {
     'type': ['autoencoder'],
-    'encoder_layer_sizes': [[128, 64, 32]],
+    'encoder_layer_sizes': [[64, 32, 16]],
     # 'decoder_layer_sizes': [[32, 64, input_dim], [64, 128, input_dim]],
     'learning_rate': [0.005],
     'learning_rate_classifier': [0.001],
