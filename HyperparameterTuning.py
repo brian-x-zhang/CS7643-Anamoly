@@ -66,40 +66,81 @@ def train_and_validate(data, model, params, epochs=100):
     # Optimizer
     if params['optimizer'] == 'SGD':
         optimizer = torch.optim.SGD(model.parameters(), lr=params['learning_rate'])
+        optimizer_classifier = torch.optim.SGD(model.parameters(), lr=params['learning_rate'])
     else: # Adam
         optimizer = optim.Adam(model.parameters(), lr=params['learning_rate'])
+        optimizer_classiifer = optim.Adam(model.parameters(), lr=params['learning_rate'])
         
     # Loss    
     if params['criterion'] == 'MSELoss':
         criterion = nn.MSELoss()
+        criterion_classifier = nn.MSELoss()
     else:
         criterion = nn.BCELoss()
+        criterion_classifier = nn.BCELoss()
         
     # Gradient Clipping
     max_grad_norm = 1.0
 
+    # Training Loop
     for epoch in range(epochs):
-        model.train()
         train_loss = 0
-        
-        for inputs, targets in data.train_loader:
-            inputs, targets = inputs.to(device), targets.to(device)
-            optimizer.zero_grad()
-            outputs = model(inputs)
-            loss = criterion(outputs, targets)
-            loss.backward()
+        if params['type'] == 'clstm':
+            model.train()
             
-            if params['type'] == 'clstm':
+            # CLSTM Training Loop
+            for inputs, targets in data.train_loader:
+                
+                inputs, targets = inputs.to(device), targets.to(device)
+                optimizer.zero_grad()
+                outputs = model(inputs)
+                loss = criterion(outputs, targets)
+                loss.backward()
+                
                 torch.nn.utils.clip_grad_norm_(model.parameters(), max_grad_norm) #gradient clipping
 
-            optimizer.step()
-            train_loss += loss.item()
+                optimizer.step()
+                train_loss += loss.item()
 
+            
+        else:
+            # Autoencoder Training Loop
+            for batch in data.train_loader:
+                inputs, _ = batch
+                optimizer.zero_grad()
+                outputs = model(inputs)
+                loss = criterion(outputs, inputs)
+                loss.backward()
+                optimizer.step()
+                total_loss += loss.item()
+                
         avg_train_loss = train_loss / len(data.train_loader)
         train_losses.append(avg_train_loss)
-
         print(f'Epoch {epoch+1}, Training Loss: {avg_train_loss}')
-    
+        
+    autoencoder = model
+        
+    if params['type'] == 'autoencoder':
+    # Autoencoder Classifier Training Loop
+        classifier = Classifier(model) 
+
+        y_train = data.y_train.view(-1, 1)
+        
+        for epoch in range(epochs):
+            optimizer_classifier.zero_grad()
+            outputs = classifier(data.X_train)
+            loss = criterion_classifier(outputs, y_train)
+            loss.backward()
+            optimizer_classifier.step()
+
+            print(f"Classifier Epoch {epoch+1}, Loss: {loss.item():.4f}")
+
+        autoencoder.to(device)
+        classifier.to(device)
+        
+        autoencoder.eval()
+        classifier.eval()
+        
     model.eval()
     
     true_labels = []
@@ -108,14 +149,33 @@ def train_and_validate(data, model, params, epochs=100):
     total_samples = 0
 
     with torch.no_grad():
-        for inputs, targets in data.test_loader:
-            inputs = inputs.to(device)
-            outputs = model(inputs)
-            _, predicted = torch.max(outputs, 1)
-            true_labels.extend(targets.cpu().numpy())
-            predicted_labels.extend(predicted.cpu().numpy())
-            test_loss += loss.item() * inputs.size(0)
-            total_samples += inputs.size(0)
+        
+        if params['type'] == 'clstm':
+        
+            for inputs, targets in data.test_loader:
+                inputs = inputs.to(device)
+                outputs = model(inputs)
+                _, predicted = torch.max(outputs, 1)
+                true_labels.extend(targets.cpu().numpy())
+                predicted_labels.extend(predicted.cpu().numpy())
+                test_loss += loss.item() * inputs.size(0)
+                total_samples += inputs.size(0)
+                
+        elif params['type'] == 'autoencoder':
+            for inputs, targets in data.test_loader:
+                inputs, targets = inputs.to(device), targets.to(device)
+
+                # Pass inputs through the autoencoder
+                encoded_features = autoencoder(inputs)
+
+                # Pass encoded features through the classifier
+                outputs = classifier(encoded_features)
+
+                # Assuming binary classification
+                predicted = (outputs > 0.5).float()
+
+                # Convert PyTorch tensors to NumPy arrays
+                predicted_labels.extend(predicted.cpu().numpy())
 
 
     # Performance Metrics

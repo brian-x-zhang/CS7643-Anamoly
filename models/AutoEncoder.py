@@ -21,7 +21,7 @@ class Autoencoder(nn.Module):
         x = self.encoder(x)
         x = self.decoder(x)
         return x
-    
+        
 class Classifier(nn.Module):
     def __init__(self, encoder):
         super(Classifier, self).__init__()
