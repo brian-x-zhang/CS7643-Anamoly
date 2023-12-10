@@ -24,8 +24,8 @@ def tune_autoencoder():
         'type': ['autoencoder'],
         'encoder_layer_sizes': [[32, 16, 8], [64, 32, 16], [128, 64, 32]],
         # 'decoder_layer_sizes': [[32, 64, input_dim], [64, 128, input_dim]],
-        'learning_rate': [0.001, 0.01],
-        'activation': [nn.ReLU(), nn.LeakyReLU(), nn.Sigmoid()],
+        'learning_rate': [0.005, 0.01, 0.05],
+        'activation': [nn.ReLU(), nn.LeakyReLU()],
         'optimizer': ['Adam'],
         'criterion': ['MSELoss'],
         'epochs': [200]
