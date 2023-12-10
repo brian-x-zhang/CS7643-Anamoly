@@ -12,11 +12,13 @@ original_print = print
 print = custom_print
 
 def main():
-    # clstm_tuning_results, clstm_model = tune_clstm()
+    
     autoencoder_tuning_results, autoencoder_model = tune_autoencoder()
-
-    # clstm_tuning_results.to_csv('clstm_tuning.csv')
     autoencoder_tuning_results.to_csv('autoencoder_tuning.csv')
+    
+    # clstm_tuning_results, clstm_model = tune_clstm()
+    # clstm_tuning_results.to_csv('clstm_tuning.csv')
+    
 
 if __name__ == "__main__":
     main()

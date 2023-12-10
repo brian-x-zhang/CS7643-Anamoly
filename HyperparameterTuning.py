@@ -23,14 +23,14 @@ def tune_autoencoder(autoencoder_grid=None):
     if autoencoder_grid is None:
         autoencoder_grid = {
             'type': ['autoencoder'],
-            'encoder_layer_sizes': [[128, 64, 32]],
+            'encoder_layer_sizes': [[32, 16, 8], [64, 32, 16], [128, 64, 32]],
             # 'decoder_layer_sizes': [[32, 64, input_dim], [64, 128, input_dim]],
-            'learning_rate': [0.01],
-            'learning_rate_classifier': [0.001, 0.005],
-            'activation': [nn.LeakyReLU()],
+            'learning_rate': [0.001, 0.01, 0.05],
+            'learning_rate_classifier': [0.0005, 0.001, 0.005],
+            'activation': [nn.LeakyReLU(), nn.ReLU()],
             'optimizer': ['Adam'],
             'criterion': ['MSELoss'],
-            'epochs': [300]
+            'epochs': [200]
         }
         
     results, best_model = hyperparameter_tuning(autoencoder_grid, data)
@@ -44,10 +44,10 @@ def tune_clstm(clstm_grid):
     if clstm_grid is None:
         clstm_grid = {
             'type': ['clstm'],
-            'conv1_out_channels': [32, 64],
+            'conv1_out_channels': [16, 32],
             'kernel_size': [3, 5],
-            'lstm_hidden_size': [32, 64],
-            'fc1_out_features': [16, 32],
+            'lstm_hidden_size': [16, 32],
+            'fc1_out_features': [4, 16, 32],
             'learning_rate': [0.001, 0.01],
             'optimizer': ['Adam'], # SGD performed poorly
             'criterion': ['BCELoss'],
