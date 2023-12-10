@@ -23,7 +23,7 @@ def tune_autoencoder():
     autoencoder_grid = {
         'type': ['autoencoder'],
         'encoder_layer_sizes': [[64, 32, 16], [128, 64, 32]],
-        'decoder_layer_sizes': [[32, 64, input_dim], [64, 128, input_dim]],
+        # 'decoder_layer_sizes': [[32, 64, input_dim], [64, 128, input_dim]],
         'learning_rate': [0.001, 0.01],
         'optimizer': ['Adam'],
         'criterion': ['MSELoss', 'BCELoss']
@@ -104,6 +104,7 @@ def train_and_validate(data, model, params, epochs=100):
 
             
         else:
+            total_loss = 0
             # Autoencoder Training Loop
             for batch in data.train_loader:
                 inputs, _ = batch
