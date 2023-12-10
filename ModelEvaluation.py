@@ -31,3 +31,5 @@ autoencoder_grid = {
 }
 
 results, autoencoder = tune_autoencoder(autoencoder_grid)
+
+print('done')
