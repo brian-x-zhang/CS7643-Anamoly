@@ -24,34 +24,44 @@
 \begin{document}
 
 %%%%%%%%% TITLE
-\title{Data Anomaly Detector : CS 7643}
+\title{Data Anomaly Detector - CS 7643}
 
-\author{Lily Chebotarova
+\author{Lily Chebotarova, Raga Lasya Munagala, Ligeng Peng, Brian Zhang\\
 % For a paper whose authors are all at the same institution,
 % omit the following lines up until the closing ``}''.
 % Additional authors and addresses can be added with ``\and'',
 % just like the second author.
 % To save space, use either the email address or home page, not both
-\and
-Raga Lasya Munagala
-\and 
-Ligeng Peng
-\and
-Brian Zhang
+Georgia Institute of Technology\\
+{\tt\small lily.chebotarova@gmail.com, rmungala6@gatech.edu, kevinplg@gatech.edu, brianxicheng@gmail.com}
 }
 
+% \author{Lily Chebotarova\\
+% {\tt\small lily.chebotarova@gmail.com}\\
+% \and 
+% Raga Lasya Mungala\\
+% {\tt\small rmungala6@gatech.edu}\\
+% \and 
+% Ligeng Peng\\
+% {\tt\small kevinplg@gatech.edu}\\
+% \and 
+% Brian Zhang\\
+% {\tt\small brianxicheng@gmail.com}\\
+% }
+
 \maketitle
-%\thispagestyle{empty}
+% \thispagestyle{empty}
 
 %%%%%%%%% ABSTRACT
 \begin{abstract}
-   In this project, we examine two leading papers describing novel methods in the field of anomaly detection for timeseries data. We reproduce the results of these
-   papers while ekeing out additional performance by fine-tuning of the models when applied to an established labelled synthetic dataset anomaly detection, "S5- A Labeled Anomaly Detection Dataset". 
-   The first method examined is C-LSTM neural network applied directly to timeseries web traffic data, as described in the paper by Tae-Young Kim and Sung-Bae Cho \cite.  
+   Anomaly detection is an important and prevalent problem across multiple domains, such as credit card fraud, medical diagnostics, and many others. 
+   Existing common approaches applied to anomaly detection often consist of supervised machine learning such as clustering or ensemble methods like random forest.
+   These approaches often have limitations in their ability to learn complexities of anomalous data structures.
+   In this project, we examine leading papers describing novel methods in the field of anomaly detection for timeseries data. We reproduce the results of these
+   papers while ekeing out additional performance by fine-tuning of the models when applied to an established labelled dataset for anomaly detection, "S5- A Labeled Anomaly Detection Dataset". 
+   The first method examined is a Convolutonal-Long-Short-Term-Memory (C-LSTM) neural network, as described in the paper by Tae-Young Kim and Sung-Bae Cho \cite{kim2018web}.  
    Model performance similar to that of the authors is demonstrated using a pytorch implementation of the model architecture described. 
-   The second method reproduced is a novel Auto-encoder with Regression (AER) approach, as described in the paper by Lawrence
-   Wong, et al \cite{wong2022aer}. 
-
+   We also achieve similar performance with an autoencoder architecture proposed by several papers in the anomaly detection field \cite{hagemann2020reconstruction, wong2022aer}.
 \end{abstract}
 
 %%%%%%%%% BODY TEXT

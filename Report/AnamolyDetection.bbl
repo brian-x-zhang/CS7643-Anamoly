@@ -25,6 +25,16 @@ Authors.
 \newblock Frobnication tutorial, 2014.
 \newblock Supplied as additional material {\tt tr.pdf}.
 
+\bibitem{hagemann2020reconstruction}
+T. Hagemann and K. Katsarou.
+\newblock Reconstruction-based anomaly detection for the cloud: A comparison on the yahoo! webscope s5 dataset.
+\newblock In {\em Proceedings of the 2020 4th International Conference on Cloud and Big Data Computing}, pages 68--75, New York, NY, USA, Sep 2020. Association for Computing Machinery.
+
+\bibitem{kim2018web}
+T.-Y. Kim and S.-B. Cho.
+\newblock Web traffic anomaly detection using c-lstm neural networks.
+\newblock {\em Expert Systems with Applications}, 106:66--76, Sep 2018.
+
 \bibitem{yahooS5}
 Yahoo Research.
 \newblock S5 - a labeled anomaly detection dataset.
