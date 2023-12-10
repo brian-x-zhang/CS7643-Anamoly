@@ -37,7 +37,7 @@ def tune_autoencoder(autoencoder_grid=None):
     
     return results, best_model
 
-def tune_clstm(clstm_grid):
+def tune_clstm(clstm_grid=None):
     data = PreProcessing()
     data.pre_process_clstm()
     
@@ -75,10 +75,12 @@ def train_and_validate(data, model, params):
     # Optimizer
     if params['optimizer'] == 'SGD':
         optimizer = torch.optim.SGD(model.parameters(), lr=params['learning_rate'])
-        optimizer_classifier = torch.optim.SGD(model.parameters(), lr=params['learning_rate_classifier'])
+        if params['type'] == 'autoencoder':
+            optimizer_classifier = torch.optim.SGD(model.parameters(), lr=params['learning_rate_classifier'])
     else: # Adam
         optimizer = optim.Adam(model.parameters(), lr=params['learning_rate'])
-        optimizer_classifier = optim.Adam(model.parameters(), lr=params['learning_rate_classifier'])
+        if params['type'] == 'autoencoder':
+            optimizer_classifier = optim.Adam(model.parameters(), lr=params['learning_rate_classifier'])
         
     # Loss    
     if params['criterion'] == 'MSELoss':
