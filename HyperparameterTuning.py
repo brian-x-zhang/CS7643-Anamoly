@@ -85,9 +85,9 @@ def train_and_validate(data, model, params, epochs=100):
     # Training Loop
     for epoch in range(epochs):
         train_loss = 0
+        
         if params['type'] == 'clstm':
             model.train()
-            
             # CLSTM Training Loop
             for inputs, targets in data.train_loader:
                 
@@ -104,7 +104,6 @@ def train_and_validate(data, model, params, epochs=100):
 
             
         else:
-            total_loss = 0
             # Autoencoder Training Loop
             for batch in data.train_loader:
                 inputs, _ = batch
@@ -113,7 +112,7 @@ def train_and_validate(data, model, params, epochs=100):
                 loss = criterion(outputs, inputs)
                 loss.backward()
                 optimizer.step()
-                total_loss += loss.item()
+                train_loss += loss.item()
                 
         avg_train_loss = train_loss / len(data.train_loader)
         train_losses.append(avg_train_loss)
@@ -123,7 +122,7 @@ def train_and_validate(data, model, params, epochs=100):
         
     if params['type'] == 'autoencoder':
     # Autoencoder Classifier Training Loop
-        classifier = Classifier(model) 
+        classifier = Classifier() 
 
         y_train = data.y_train.view(-1, 1)
         
