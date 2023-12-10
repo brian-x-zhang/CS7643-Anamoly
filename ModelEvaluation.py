@@ -8,16 +8,16 @@ from HyperparameterTuning import tune_autoencoder, tune_clstm
 clstm_params = {
     'type': ['clstm'],
     'conv1_out_channels': [16],
-    'kernel_size': [5],
+    'kernel_size': [3],
     'lstm_hidden_size': [16],
-    'fc1_out_features': [32],
-    'learning_rate': [0.01],
+    'fc1_out_features': [4],
+    'learning_rate': [0.001],
     'optimizer': ['Adam'], # SGD performed poorly
     'criterion': ['BCELoss'],
-    'epochs': [500]
+    'epochs': [200]
 }
 
-results, clstm = tune_clstm(clstm_params)
+# results, clstm = tune_clstm(clstm_params)
 
 # Best autoencoder params
 autoencoder_grid = {
@@ -29,9 +29,12 @@ autoencoder_grid = {
     'activation': [nn.ReLU()],
     'optimizer': ['Adam'],
     'criterion': ['MSELoss'],
-    'epochs': [500]
+    'epochs': [200]
 }
 
 results, autoencoder = tune_autoencoder(autoencoder_grid)
+
+# torch.save(clstm, 'models/clstm.pt')
+torch.save(autoencoder, 'models/autoencoder.pt')
 
 print('done')
