@@ -2,7 +2,7 @@ import torch
 import torch.nn as nn
 
 class CLSTM(nn.Module):
-    def __init__(self, conv1_out_channels=64, kernel_size=5, lstm_hidden_size=64, fc1_out_features=32,):
+    def __init__(self, conv1_out_channels=64, kernel_size=5, lstm_hidden_size=64, fc1_out_features=32):
         super(CLSTM, self).__init__()
         self.conv1 = nn.Conv1d(1, conv1_out_channels, kernel_size=kernel_size, stride=1, padding=2)
         self.pool = nn.MaxPool1d(2, stride=2)
