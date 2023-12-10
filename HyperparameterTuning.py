@@ -27,7 +27,8 @@ def tune_autoencoder():
         'learning_rate': [0.001, 0.01],
         'activation': [nn.ReLU(), nn.LeakyReLU(), nn.Sigmoid()],
         'optimizer': ['Adam'],
-        'criterion': ['MSELoss']
+        'criterion': ['MSELoss'],
+        'epochs': [200]
     }
     
     results, best_model = hyperparameter_tuning(autoencoder_grid, data)
@@ -46,7 +47,8 @@ def tune_clstm():
         'fc1_out_features': [16, 32],
         'learning_rate': [0.001, 0.01],
         'optimizer': ['Adam'], # SGD performed poorly
-        'criterion': ['BCELoss']
+        'criterion': ['BCELoss'],
+        'epochs': [100]
     }
     
     results, best_model = hyperparameter_tuning(clstm_grid, data)
@@ -54,7 +56,7 @@ def tune_clstm():
     return results, best_model
     
     
-def train_and_validate(data, model, params, epochs=100):
+def train_and_validate(data, model, params):
     pprint(f"Training Model: {pprint(params)}")
     
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -63,6 +65,9 @@ def train_and_validate(data, model, params, epochs=100):
     train_losses = []
     true_labels = []
     predicted_labels = []
+    
+    # Epochs
+    epochs = params['epochs']
     
     # Optimizer
     if params['optimizer'] == 'SGD':
