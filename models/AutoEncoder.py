@@ -27,7 +27,7 @@ class Classifier(nn.Module):
     def __init__(self, encoder):
         super(Classifier, self).__init__()
         self.encoder = encoder
-        self.fc = nn.Linear(16, 1)
+        self.fc = nn.Linear(self.encoder.encoder[0].in_features, 1)
 
     def forward(self, x):
         x = self.encoder(x)

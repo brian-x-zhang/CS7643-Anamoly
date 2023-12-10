@@ -123,7 +123,7 @@ def train_and_validate(data, model, params, epochs=100):
         
     if params['type'] == 'autoencoder':
     # Autoencoder Classifier Training Loop
-        classifier = Classifier(autoencoder) 
+        classifier = Classifier(autoencoder.encoder) 
 
         y_train = data.y_train.view(-1, 1)
         
