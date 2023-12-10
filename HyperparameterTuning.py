@@ -88,6 +88,7 @@ def train_and_validate(data, model, params, epochs=100):
         
         if params['type'] == 'clstm':
             model.train()
+
             # CLSTM Training Loop
             for inputs, targets in data.train_loader:
                 
@@ -122,7 +123,7 @@ def train_and_validate(data, model, params, epochs=100):
         
     if params['type'] == 'autoencoder':
     # Autoencoder Classifier Training Loop
-        classifier = Classifier() 
+        classifier = Classifier(autoencoder) 
 
         y_train = data.y_train.view(-1, 1)
         
