@@ -220,6 +220,7 @@ def hyperparameter_tuning(hyperparams, data):
         params['F1'] = f1
         params['Accuracy'] = accuracy
         params['Recall'] = recall
+        params['Precision'] = precision
         params['Average Test Loss']: avg_test_loss
         results.append(params)
         
