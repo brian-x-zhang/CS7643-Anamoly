@@ -14,17 +14,17 @@ clstm_params = {
     'learning_rate': [0.01],
     'optimizer': ['Adam'], # SGD performed poorly
     'criterion': ['BCELoss'],
-    'epochs': 500
+    'epochs': [500]
 }
 
-# results, clstm = tune_clstm(clstm_params)
+results, clstm = tune_clstm(clstm_params)
 
 # Best autoencoder params
 autoencoder_grid = {
     'type': ['autoencoder'],
     'encoder_layer_sizes': [[128, 64, 32]],
     # 'decoder_layer_sizes': [[32, 64, input_dim], [64, 128, input_dim]],
-    'learning_rate': [0.001],
+    'learning_rate': [0.01],
     'learning_rate_classifier': [0.005],
     'activation': [nn.ReLU()],
     'optimizer': ['Adam'],

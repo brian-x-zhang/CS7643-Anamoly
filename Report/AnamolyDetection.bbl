@@ -1,0 +1,28 @@
+\begin{thebibliography}{1}\itemsep=-1pt
+
+\bibitem{chalapathy2019deep}
+R. Chalapathy and S. Chawla.
+\newblock Deep learning for anomaly detection: A survey.
+\newblock {\em arXiv}, Jan 2019.
+
+\bibitem{hagemann2020reconstruction}
+T. Hagemann and K. Katsarou.
+\newblock Reconstruction-based anomaly detection for the cloud: A comparison on the yahoo! webscope s5 dataset.
+\newblock In {\em Proceedings of the 2020 4th International Conference on Cloud and Big Data Computing}, pages 68--75, New York, NY, USA, Sep 2020. Association for Computing Machinery.
+
+\bibitem{kim2018web}
+T.-Y. Kim and S.-B. Cho.
+\newblock Web traffic anomaly detection using c-lstm neural networks.
+\newblock {\em Expert Systems with Applications}, 106:66--76, Sep 2018.
+
+\bibitem{yahooS5}
+Yahoo Research.
+\newblock S5 - a labeled anomaly detection dataset.
+\newblock Available at: \url{https://webscope.sandbox.yahoo.com/catalog.php?datatype=s&did=70}.
+
+\bibitem{wong2022aer}
+L. Wong, D. Liu, L. Berti-Equille, S. Alnegheimish, and K. Veeramachaneni.
+\newblock Aer: Auto-encoder with regression for time series anomaly detection.
+\newblock {\em arXiv}, Dec 2022.
+
+\end{thebibliography}
