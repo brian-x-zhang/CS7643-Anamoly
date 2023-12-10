@@ -324,7 +324,7 @@ This approach aims to enhance accuracy in identifying anomaly data points by mit
 
 
 \section{Hyperparameter Tuning Results}
-   \tiny
+   \tiny{
 
    \begin{center}
    \begin{tabular}{llrrlllrrrrr}
@@ -444,7 +444,42 @@ This approach aims to enhance accuracy in identifying anomaly data points by mit
       \hline
    \end{tabular} 
    \end{center}
+   }
 
+\section{Loss Curves}
+\normalsize
+Loss curves for the C-LSTM and autoenocder models prior to hyperparameter tuning are shown below.
+% Chart 1: Training Loss Over Time (C-LSTM)
+\begin{figure}[htbp]
+   \centering
+   \includegraphics[width=\linewidth]{images/C-LSTM_loss.png}
+   \caption{Training Loss Over Time (C-LSTM)}
+   \label{fig:c_lstm_training_loss}
+   \end{figure}
+   
+   % Chart 2: Training Loss Over Time (Autoencoder)
+   \begin{figure}[htbp]
+   \centering
+   \includegraphics[width=\linewidth]{images/autoenc_loss.png}
+   \caption{Training Loss Over Time (Autoencoder)}
+   \label{fig:autoencoder_training_loss}
+   \end{figure}
+   
+   % % Chart 3: Confusion Matrix (Autoencoder)
+   % \begin{figure}[htbp]
+   % \centering
+   % \includegraphics[width=\linewidth]{path_to_autoencoder_confusion_matrix.png}
+   % \caption{Confusion Matrix (Autoencoder)}
+   % \label{fig:autoencoder_confusion_matrix}
+   % \end{figure}
+   
+   % % Chart 4: Confusion Matrix (Random Forest)
+   % \begin{figure}[htbp]
+   % \centering
+   % \includegraphics[width=\linewidth]{path_to_random_forest_confusion_matrix.png}
+   % \caption{Confusion Matrix (Random Forest)}
+   % \label{fig:random_forest_confusion_matrix}
+   % \end{figure}
 \end{appendices}
 %-------------------------------------------------------------------------
 
