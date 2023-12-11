@@ -6,7 +6,7 @@
 \usepackage{graphicx}
 \usepackage{amsmath}
 \usepackage{amssymb}
-
+\usepackage{appendix}
 % Include other packages here, before hyperref.
 
 % If you comment hyperref and then uncomment it, you should delete
@@ -19,83 +19,122 @@
 \def\cvprPaperID{****} % *** Enter the CVPR Paper ID here
 \def\httilde{\mbox{\tt\raisebox{-.5ex}{\symbol{126}}}}
 
-% Pages are numbered in submission mode, and unnumbered in camera-ready
+% Pages are numbered in submission mode, and unnumberesd in camera-ready
 \ifcvprfinal\pagestyle{empty}\fi
 \begin{document}
 
 %%%%%%%%% TITLE
-\title{Data Anomaly Detector : CS 7643}
+\title{Data Anomaly Detector - CS 7643}
 
-\author{Lily Chebotarova
+\author{Lily Chebotarova, Raga Lasya Munagala, Ligeng Peng, Brian Zhang\\
 % For a paper whose authors are all at the same institution,
 % omit the following lines up until the closing ``}''.
 % Additional authors and addresses can be added with ``\and'',
 % just like the second author.
 % To save space, use either the email address or home page, not both
-\and
-Raga Lasya Munagala
-\and 
-Ligeng Peng
-\and
-Brian Zhang
+Georgia Institute of Technology\\
+{\tt\small lily.chebotarova@gmail.com, rmungala6@gatech.edu, kevinplg@gatech.edu, brianxicheng@gmail.com}
 }
 
+% \author{Lily Chebotarova\\
+% {\tt\small lily.chebotarova@gmail.com}\\
+% \and 
+% Raga Lasya Mungala\\
+% {\tt\small rmungala6@gatech.edu}\\
+% \and 
+% Ligeng Peng\\
+% {\tt\small kevinplg@gatech.edu}\\
+% \and 
+% Brian Zhang\\
+% {\tt\small brianxicheng@gmail.com}\\
+% }
+
 \maketitle
-%\thispagestyle{empty}
+% \thispagestyle{empty}
 
 %%%%%%%%% ABSTRACT
 \begin{abstract}
-   In this project, we examine two leading papers describing novel methods in the field of anomaly detection for timeseries data. We reproduce the results of these
-   papers while ekeing out additional performance by fine-tuning of the models when applied to an established labelled synthetic dataset anomaly detection, "S5- A Labeled Anomaly Detection Dataset". 
-   The first method examined is C-LSTM neural network applied directly to timeseries web traffic data, as described in the paper by Tae-Young Kim and Sung-Bae Cho \cite.  
+   Anomaly detection is an important and prevalent problem across multiple domains, such as credit card fraud, medical diagnostics, and many others. 
+   Existing common approaches applied to anomaly detection often consist of supervised machine learning such as clustering or ensemble methods like random forest.
+   These approaches often have limitations in their ability to learn complexities of anomalous data structures.
+   In this project, we examine leading papers describing novel methods in the field of anomaly detection for timeseries data. We reproduce the results of these
+   papers while ekeing out additional performance by fine-tuning of the models when applied to an established labelled dataset for anomaly detection, "S5- A Labeled Anomaly Detection Dataset". 
+   The first method examined is a Convolutonal-Long-Short-Term-Memory (C-LSTM) neural network, as described in the paper by Tae-Young Kim and Sung-Bae Cho \cite{kim2018web}.  
    Model performance similar to that of the authors is demonstrated using a pytorch implementation of the model architecture described. 
-   The second method reproduced is a novel Auto-encoder with Regression (AER) approach, as described in the paper by Lawrence
-   Wong, et al \cite{wong2022aer}. 
-
+   We also achieve similar performance with an autoencoder architecture proposed by several papers in the anomaly detection field \cite{hagemann2020reconstruction, wong2022aer}.
 \end{abstract}
 
 %%%%%%%%% BODY TEXT
 \section{Introduction/Background/Motivation}
 
-(5 points) What did you try to do? What problem did you try to solve? Articulate your objectives using absolutely no jargon. 
-Anomaly detection is a common problem across many domains, with potentially profound implications if addressed effectively. Anomalies identify some sort of 
-irregularity in the normal pattern or prevailing trend of some sort of data. Perhaps the most common type of anomaly, and the type addressed by this paper, occurs in
-timeseries data. Anomalies in web-traffic data may indicate ptoential issues such as unexpected spikes in user traffic which may be due to cyber-attacks, system failures, 
-or viral trends. Our paper examines leading novel approaches in this field of anomaly detection and compares the relative performance of these methods. 
+Anomalies represent some sort of irregularity in the normal pattern or the prevailing trend of data, or in other words they are data points that stand out from the others 
+and deviate from observed and expected behavior in the data. Anomalies can include outliers, drifts in data or other changes in the system. Perhaps the most common type of 
+anomaly detection problem, and the type addressed by this paper, occurs in time series data. Anomaly detection is a common problem across many domains, with potentially profound 
+implications if addressed effectively. The ability to accurately identify anomalies enables proactive detection of irregular patterns, diagnostic of potential issues, and enhancement 
+of the quality and reliability of various services. Anomalies in web-traffic data may indicate potential issues such as unexpected spikes in user traffic which may be due to 
+cyber-attacks, system failures, or viral trends. 
 
 (5 points) How is it done today, and what are the limits of current practice?
-The current state of the art in timeseries anomaly detection primarily consists of deep learning methods, which together with the high prevalance and imporatance of this problem, 
-makes it an ideal candidate for study in this paper. Common deep learning methods employed in this field include Long Short-Term Memory (LSTM) networks and autoencoders, both of which
-we examine in this paper. RNN-based methods such as these are particularly well-suited for timeseries problems which inherently consist of sequential data.
+The current state of the art in timeseries anomaly detection primarily consists of deep learning methods, which together with the high prevalence and importance of this problem, makes it an 
+ideal candidate for study in this paper. Deep Learning methods have been found to significantly outperform the more traditional methods, as they are able to learn hierarchical features and capture 
+complexities in the data and perform better at large scale \cite{chalapathy2019deep}. Common deep learning methods employed in this field include Long Short-Term Memory (LSTM) networks and autoencoders, both of which we 
+examine in this paper. RNN-based methods such as these are particularly well-suited for timeseries problems which inherently consist of sequential data \cite{chalapathy2019deep}. Autoencoders have also been successfully 
+applied to time-series anomaly detection in unsupervised scenarios and performed better than methods such as Local Outlier Factor and Principal Component analysis \cite{hagemann2020reconstruction}.
 
-The paper by Tae-Young Kim and Sun-Bae Cho offers an improvment over conventional LSTM approaches by integrating a convolutional layer as the input for several LSTM
-layers, reducing temporal variations and improivng overall performance. Similarly, the paper by Lawerence Wong, et al. offers an improvment over conventional approaches by combining 
-separate autoencoder and LSTM approaches models into a single composite model optimizing a joint objective function, and able to make bi-directional predictions.
+Our paper examines leading novel approaches in this field of anomaly detection and compares the relative performance of these methods. Our paper examines leading novel approaches in this field of anomaly detection and compares 
+the relative performance of these methods. The first method examined is C-LSTM neural network applied to time series web traffic data, as described in the paper by Tae-Young Kim and Sung-Bae Cho \cite{kim2018web}. 
+Model performance similar to that of the authors is demonstrated using a pytorch implementation of the model architecture described. The second method reproduced is an autoencoder approach, as
+described in the paper by Lawrence Wong, et al \cite{wong2022aer}.
 
-(5 points) Who cares? If you are successful, what difference will it make? 
-We will compare the effectiveness of the two approaches investigated in this paper to see which offers the best performance on the anomaly detection dataset selected. 
+The paper by Tae-Young Kim and Sun-Bae Cho \cite{kim2018web} offers an improvment over conventional LSTM approaches by integrating a convolutional layer as the input for LSTM layer, reducing temporal variations 
+and improivng overall performance. Similarly, the paper by Lawerence Wong, et al. \cite{wong2022aer} offers an improvment over conventional approaches by combining separate autoencoder and LSTM approaches models into 
+a single composite model optimizing a joint objective function, and able to make bi-directional predictions. We will compare the effectiveness of the two approaches investigated in this paper to see 
+which offers the best performance on the anomaly detection dataset selected.
 
-Timely detection of these anomalies is essential for organzing a prompt response and minimizing the impact to system performance and user experience. 
+We will compare the effectiveness of the two approaches investigated in this paper to see which offers the best performance on the anomaly detection dataset selected. Timely detection of these anomalies is essential for organzing a prompt response and minimizing the impact to system performance and user experience. 
 In short, a robust and effective anomaly detection method for a given problem should allow us to proactively detect irregular patterns and diagnose potential issues, thus
 enhancing the quality and reliability of the services tracked by this timeseries data. 
 
-(5 points) What data did you use? Provide details about your data, specifically choose the most important aspects of your data mentioned \href{https://arxiv.org/abs/1803.09010}{here}. You don’t have to choose all of them, just the most relevant.
-Our paper uses the dataset, \textit{S5 A Labeled Anomaly Detection Dataset} \cite{yahooS5}, which offers a diverse range of real and synthetic time-series data specifically
-curated for the purpose of anomaly detection. The dataset is publicly available via Yahoo Research \cite{yahooS5}.
+Our paper uses the dataset, S5 A Labeled Anomaly Detection Dataset \cite{yahooS5}, which offers a diverse range of real and synthetic time-series data specifically curated for the purpose of anomaly detection. 
+The dataset is publicly available via Yahoo Research \cite{yahooS5}. This dataset was chosen because it offers a diverse set of edge cases for testing our models, including outliers and various change-points. 
+The time series data also includes varying trend, noise, and seasonality which enables us to better test the robustness of our model implementations. 
+The real portion of the dataset is made up of the web traffic metrics of various yahoo services, alongside synthetic data added to the dataset.
 
-This dataset was chosen because it offers a diverse set of edge cases for testing our models, including outliers and various change-points. The timesries data also includes varying trend, noise, and seasonality 
-which enables us to better test the robustness of our model implementations. The real portion of the dataset is made up of the web traffic metrics of various yahoo services, alongside synthetic data added to the dataset. 
 %-------------------------------------------------------------------------
 %------------------------------------------------------------------------
 \section{Approach}
 
-(10 points) What did you do exactly? How did you solve the problem? Why did you think it would be successful? Is anything new in your approach? 
-\subsection{Autoencoder}
-The structure of the problem was characterized by a highly imbalanced dataset, with normal network activity dominating and anomalies representing a minority class. 
-Given the significance of detecting these rare anomalies, the structure of the autoencoder model was designed to reflect the underlying data dynamics. 
-We start the problem with 80\% training dataset and 20\% testing dataset. The encoder is trained on a subset of the training dataset, capturing the essential characteristics of the network traffic, before being trained 
-per the following steps:
+\subsection{Pre-processing}
+First, we applied pre-processing steps and exploratory analysis to the data. We focused on the A1 part of the Yahoo dataset that consists of the real web 
+traffic with manual human-applied labels for anomalies. It is presented in 67 separate files with traffic measures from various Yahoo web services and anomaly 
+data. The data in this dataset is represented by a time series of traffic measurement values from actual web series in one hour units. 
+Since the labeling was manually done, there is potential for some inconsistency in data.The traffic also presents a high level of variability.  
+The data from 67 files was concatenated for training, values were normalized and any values in traffic data that were equal to zero were dropped. 
+Normalizing data was important as it ensured that we didn’t have features with larger scales or variances that could dominate the learning process. 
+The values were normalized using the Euclidean norm. This was achieved using the preprocessing.normalize function available in scikit-learn in Python. The resulting normalized has each row scaled such that the Euclidean norm (the square root of the sum of squares of each element) of each row is 1. 
+The normalized web-traffic timeseries data is shown in Figure \ref*{pre-process-web-traffic}. 
 
+\begin{figure}[ht]
+   \centering
+   \includegraphics[width=0.5\textwidth]{images/webtraffic.png}
+   \caption{Pre-processed Web Traffic Timeseries Data}
+   \label{pre-process-web-traffic}
+   \end{figure}
+
+The structure of the problem is characterized by a highly imbalanced dataset, with normal network activity dominating and anomalies representing a minority class.  Considering these characteristics of the data, we employed the sliding window method to the data.
+In this sliding window technique, we created  windows of data by sliding a fixed-size window across the data samples. For the data presented in this dataset, we created a sliding window of length 60. 
+
+To perform anomaly detection on the preprocessed dataset, we trained and evaluated an Autoencoder and C-LSTM network. We also further compared the performance to traditional machine learning methods such as Random Forest. 
+
+In response to addressing the highly imbalanced nature of the dataset, we have innovatively incorporated a sliding window methodology as part of our preprocessing strategy. This approach entails 
+carefully segmenting the dataset into distinct windows, allowing for a more balanced representation of both normal and anomaly instances. By implementing this sliding window technique, we aim to 
+mitigate the inherent imbalance and create a more equitable distribution of data points, fostering a robust learning environment for our model. This comprehensive evaluation involves comparing the 
+performance of our model across different preprocessing strategies to discern the most effective approach for anomaly detection.
+
+\subsection{Autoencoder}
+The structure of the autoencoder model was designed to reflect the underlying imbalanced makeup of the dataset.
+We start the problem with 70\% training dataset and 30\% testing dataset. The encoder is trained on a subset of the training dataset, capturing the essential characteristics of the network traffic, before being trained 
+per the following steps:
 
 \begin{enumerate}
     \item Created an autoencoder with an encoder and a decoder in PyTorch.
@@ -106,363 +145,409 @@ per the following steps:
     \item Evaluated the model on a separate test set, passing inputs through the autoencoder and then through the classifier, calculating accuracy for anomaly detection.
 \end{enumerate}
 
-In the autoencoder model, the parts with learned parameters were primarily associated with the encoder and decoder components. These components consisted of linear layers (fully connected) and activation functions, such as ReLU, designed to transform and compress the input data. 
-Specifically, the encoder learned to map the input features to a lower-dimensional representation, capturing essential information about normal network behavior. Conversely, the decoder learned to reconstruct the input data from this compressed representation.
+In the autoencoder model, the parts with learned parameters were primarily associated with the encoder and decoder components. These components consisted of linear layers (fully connected) 
+and activation functions, such as ReLU, designed to transform and compress the input data. Specifically, the encoder learned to map the input features to a lower-dimensional representation, 
+capturing essential information about normal network behavior. Conversely, the decoder learned to reconstruct the input data from this compressed representation \ref*{autoenc-network}
 
-(5 points) What problems did you anticipate? What problems did you encounter? Did the very first thing you tried work? 
+The post-processing classifier, which was applied for decision-making or anomaly identification, involved a separate linear layer followed by a sigmoid activation function. This part of the model 
+facilitated the conversion of the encoded features into decision probabilities, determining whether a given input represented normal or anomalous network activity. While the weights of the linear 
+layer in the post-processing step were learned during training, this part of the model served more as a decision-making component than a feature extraction one.
 
-\textbf{Important: Mention any code repositories (with citations) or other sources that you used, and specifically what changes you made to them for your project. }
+\begin{figure}[ht]
+   \centering
+   \includegraphics[width=0.5\textwidth]{images/autoenc-network.png}
+   \caption{Autoencoder-Decoder Diagram}
+   \label{autoenc-network}
+   \end{figure}
+
+In the quest to optimize the autoencoder model, several hyperparameters were explored and fine-tuned to enhance overall performance. The initial architecture, characterized by three linear layers in both 
+the encoder and decoder with hidden dimensions (16, 8, 4), underwent significant adjustments. The optimized architecture featured larger hidden dimensions in the encoder (64, 32, 16) and a mirrored structure 
+in the decoder (16, 32, 64). This architectural refinement aimed to empower the model with the capacity to capture more intricate patterns within the data. Moreover, the learning rate, a critical factor 
+influencing training dynamics, was systematically tested at values of 0.001, 0.005, and 0.01. Through careful evaluation, a learning rate of 0.005 emerged as the most effective in striking a balance 
+between convergence speed and stability.
+
+Batch size, another crucial hyperparameter, was subjected to experimentation with various sizes. The optimal batch size was identified as 512, showcasing its pivotal role in facilitating efficient model 
+training and convergence. Furthermore, the choice of optimizer played a significant role in the training process. The Adam optimizer was selected for its effectiveness in optimizing neural networks, 
+contributing to the overall success of the model.
+In our initial attempt to model the data directly, we encountered a significant challenge due to the highly imbalanced nature of the dataset. 
+Despite achieving an impressive overall accuracy of 98.15\%, the F1 score, a critical metric for evaluating model performance, remained notably low at 13\%. This low F1 score suggested that the model 
+struggled to discern and learn the essential patterns or features crucial for accurate predictions.
+Recognizing the limitations of our first approach, we pivoted to employ the sliding window method. This strategic adjustment proved instrumental in addressing the imbalance issue and yielded 
+tangible improvements, particularly in the F1 score. The sliding window method allowed for a more nuanced analysis of the data, contributing to a refined understanding of the underlying patterns. 
+Consequently, our model exhibited enhanced performance, showcasing the importance of tailored preprocessing techniques in handling imbalanced datasets and improving overall predictive accuracy.
+
+
+\subsection{C-LSTM}
+The C-LSTM model is particularly well-suited for anomaly detection in time series data due to its unique architecture that combines the strengths of convolutional neural networks (CNNs) and 
+long short-term memory networks (LSTMs). Real web traffic data with manual anomaly labels presented in the Yahoo data set has patterns of spatial and temporal information. LSTMs are traditionally an 
+effective choice for anomaly detection especially on sequential data due to their ability to extract temporal features of the data. Additionally, the ability of these models to capture long-term dependencies 
+in time-series data also makes them more adaptable to evolving data patterns, which is crucial for accurately identifying anomalies over time. Further, the CNN layers provide the benefit of reduction of 
+variation in spatial information.  This combination allows the model to effectively capture both spatial and temporal features in the data, which are crucial for accurately identifying anomalies \cite{kim2018web} to 
+achieve higher performance for anomaly detection in time series. We attempt to replicate the results of the model presented in the paper by Tae Young Kim, Sung Bae Cho \cite{kim2018web}.
+
+The data was pre-processed using the sliding window approach, with the length of the web traffic window set to 60.Our model was built in PyTorch as opposed to Keras model presented in the paper, 
+with architecture presented in Table 1. First, there are 2 convolutional layers, each followed by the tanh activation and max pooling. Then the LSTM is applied to extract the temporal features from the data. 
+Finally, two fully-connected linear layers and softmax are applied for the final classification task and output layer. We noticed differences in behavior of the model in Pytorch as compared to Keras model, 
+which can potentially be explained by the underlying differences in how these frameworks handle certain factors in the model architecture and training, like weight initialization, loss functions etc. 
+Due to some of these differences, the total number of parameters and certain attributes have been modified for Pytorch implementation. Additionally, gradient clipping was implemented to prevent exploding 
+gradients. 
+
+\subsection{Hyperparameter Tuning}
+As part of optimizing the C-LSTM and autoencoder models, we employed a detailed hyperparameter tuning framework designed to optimize the performance of both Convolutional Long Short-Term Memory (C-LSTM) 
+and Autoencoder models. This framework is pivotal in determining the most effective configurations for our models, ensuring they are finely tuned for the specific tasks of feature 
+representation and anomaly detection. We adopted a systematic approach to explore a wide range of hyperparameters, including but not limited to, layer dimensions, learning rates, and activation functions. 
+The range of tuning parameters for the C-LSTM and Autoencoder models are shown is shown in Figure \ref*{clstm-tuning-matrix} and Figure \ref*{autoenc-tuning-matrix}, respectively.
+
+\begin{table}[h]
+   \centering
+   \caption{Hyperparameter tuning grid for C-LSTM model}
+   \label{clstm-tuning-matrix}
+   \begin{tabular}{|l|l|}
+   \hline
+   \textbf{Hyperparameter}   & \textbf{Values}         \\ \hline
+   Conv1 Output Channels     & 16, 32                  \\ \hline
+   Kernel Size               & 3, 5                    \\ \hline
+   LSTM Hidden Size          & 16, 32                  \\ \hline
+   FC1 Output Features       & 4, 16, 32               \\ \hline
+   Learning Rate             & 0.001, 0.01             \\ \hline
+   Optimizer                 & Adam             \\ \hline
+   Criterion                 & BCELoss                 \\ \hline
+   Epochs                    & 200                     \\ \hline
+   \end{tabular}
+   \end{table}
+
+\begin{table}[h]
+      \centering
+      \caption{Hyperparameter tuning grid for Autoencoder model}
+      \label{autoenc-tuning-matrix}
+      \begin{tabular}{|l|l|}
+      \hline
+      \textbf{Hyperparameter}               & \textbf{Values}                                 \\ \hline
+      Encoder Layer Sizes                   & \small{[32,16,8],[64,32,16],[128,64,32]}       \\ \hline
+      \small{Autoencoder Learning Rate}           & 0.001, 0.01, 0.05                               \\ \hline
+      \small{Classifier Learning Rate}            & 0.0005, 0.001, 0.005                            \\ \hline
+      Activation                            & LeakyReLU, ReLU                                 \\ \hline
+      Optimizer                             & Adam                                            \\ \hline
+      Criterion                             & MSELoss                                         \\ \hline
+      Epochs                                & 200                                             \\ \hline
+      \end{tabular}
+      \end{table}
+
+For the C-LSTM model, hyperparameter tuning focused on its unique architecture that combines convolutional layers with LSTM units. 
+Key hyperparameters include the number and size of convolutional filters, kernel sizes, the number of LSTM units, and the architecture of fully connected layers. 
+Given the sequential nature of our data, special attention was given to the size of the LSTM units, which play a crucial role in capturing temporal dependencies.
+The convolutional layers were fine-tuned to effectively extract spatial features before they were fed into the LSTM units. The learning rate was also 
+adjusted to balance the speed and stability of the training process.
+
+For the autoencoder tuning focused on the encoder and decoder's layer sizes and the activation functions used. The depth and breadth of these layers were 
+especially important in determining the model's ability to compress and reconstruct the input data effectively. The leaky ReLU actiation function was tested
+in addition to the original ReLU activation, as it was hypothesized that outliers we are seeking to focus on in an anomaly detection problem may be better 
+represented by allowing a small gradient for negative values (over the dead-neurons at the zero-cutoff for ReLU).
+
 
 \section{Experiments and Results}
 
-(10 points) How did you measure success? What experiments were used? What were the results, both quantitative and qualitative? Did you succeed? Did you fail? Why? Justify your reasons with arguments supported by evidence and data.
+\subsection{Experiments}
+Throughout the development of the autoencoder and C-LSTM models for anomaly detection, a series of experiments were systematically conducted to address various challenges and 
+enhance the model's overall performance. Given the highly imbalanced nature of the initial dataset, the effectiveness of different techniques, such as the sliding window 
+method and subsampling, was thoroughly explored to balance the dataset and improve the model's ability to detect anomalies. Additionally, hyperparameter tuning played a 
+crucial role in optimizing the model. The architecture of the autoencoder, including the number of layers and neurons per layer, as well as hyperparameters like the learning 
+rate and batch size, were systematically adjusted and tested to identify the most effective configuration. The training process involved monitoring the loss function over 100 
+epochs, ensuring convergence and assessing the model's learning progress.
 
-\textbf{Important: This section should be rigorous and thorough. Present detailed information about decision you made, why you made them, and any evidence/experimentation to back them up. This is especially true if you leveraged existing architectures, pre-trained models, and code (i.e. do not just show results of fine-tuning a pre-trained model without any analysis, claims/evidence, and conclusions, as that tends to not make a strong project). }
+In conjunction with the autoencoder, a classifier was trained on the encoded features to perform binary classification. The training of this classifier was evaluated over 
+multiple epochs to gauge its effectiveness in distinguishing between normal and anomalous instances. Quantitative evaluation experiments included the calculation of various 
+metrics such as accuracy, precision, recall, and F1-score on a separate test set. These metrics provided valuable insights into the model's ability to correctly classify 
+instances and handle class imbalances effectively. Finally, the performance of the autoencoder model was compared with other models, such as a Random Forest classifier, to 
+assess its relative effectiveness in anomaly detection. Through these comprehensive experiments, the iterative refinement of the model aimed to overcome challenges, optimize 
+its architecture, and achieve accurate anomaly detection.
 
+\subsection{Results}
+The dataset we had is highly imbalanced. It's important to note that while the accuracy metric is commonly used, its reliability can be 
+compromised in the presence of imbalanced datasets. For instance, if anomalies are significantly outnumbered by normal cases, a high overall 
+accuracy may be misleading. In the context of anomaly detection, the actual detection of anomalies becomes crucial.
+In this scenario, precision, recall, and F1-score metrics can provide a more nuanced evaluation of the model's performance. 
+Precision evaluates the accuracy of positive predictions, recall assesses the model's ability to capture all actual positives, and the F1-score 
+balances precision and recall. These metrics are particularly useful for addressing class imbalance and providing a more comprehensive understanding of 
+the model's strengths and weaknesses.
+\subsubsection{C-LSTM}
+To train the C-LSTM model, Adam Optimizer and Binary Cross entropy were used. Binary Cross entropy is appropriate for this task since our task is binary classification. 
+An important consideration in using this loss function for anomaly detection is that it may favor the majority class. However, since we performed the sliding window 
+transformation for the input data, it offers some compensation for the class imbalances. After preprocessing with a sliding window of length 60, we ended up with 
+92619 windows, of which 10194 were windows with anomaly. Compared to the initial dataset, where only 0.02\% The initial learning rate of 0.01 provides a desirable 
+convergence within the 100 epochs used and with batch size of 512. We experienced instability in the model with training loss spiking at around 60-70 epochs before 
+decreasing and leveling off again. Implementing gradient clipping has resulted in more stable gradients and improved performance. See Appendix 2 for training loss curve 
+and confusion matrix results. Recall of 62.21\% achieved by C-LSTM is not extremely high, but indicates that the model sensitivity is capturing a reasonable proportion of 
+actual anomalies, while The f1 score of 64.27\%  further suggests that the model is also capable of identifying anomalies with some degree of accuracy, balancing precision 
+\(66.46\%\) and recall. Overall accuracy achieved was 91.78\%. 
+
+\subsubsection{Autoencoder}
+While the quantitative results indicate a decrease in the reconstruction loss, a qualitative analysis involves inspecting the reconstructed outputs visually or through 
+other means. The loss function used in the provided code is the Mean Squared Error (MSE) loss. The MSE loss is computed between the reconstructed outputs (outputs) 
+generated by the autoencoder and the original inputs (inputs). It measures the average squared difference between corresponding elements of these two tensors. 
+The criterion variable, which is used to calculate the loss, is initialized as nn.MSELoss() earlier in the code. The model then minimizes this loss during training to 
+improve the reconstruction performance and learn a meaningful representation of the input data.
+
+The progression from an initial loss of 0.4728 to a final loss of 0.1211 highlights the effectiveness of the Autoencoder in minimizing the dissimilarity between the 
+original and reconstructed data. This trend suggests that the model has successfully captured meaningful representations of the input features, resulting in a more 
+refined and optimized reconstruction of the data. Such a quantitative improvement supports the overall success of the Autoencoder in its learning objectives.
+The success of the Autoencoder model can be assessed based on the performance metrics summarized in the results. While the Autoencoder achieved a high accuracy 
+of 92.54\%, indicating its ability to make correct predictions on the overall dataset, it is crucial to delve deeper into other metrics for a more comprehensive evaluation.
+Precision, recall, and F1-Score provide insights into the model's performance in detecting anomalies specifically. 
+The Autoencoder demonstrates a precision of 68.80\%, indicating that when it predicts an anomaly, it is correct approximately 68.80\% of the time. 
+However, the recall is 34.16\%, implying that the model may not be capturing all actual anomalies, missing a significant portion.
+The F1-Score, which balances precision and recall, is 45.65\%, suggesting a trade-off between correctly identifying anomalies and minimizing false positives.
+In summary, while the Autoencoder shows a high overall accuracy, its success in anomaly detection is tempered by a lower recall and F1-Score, indicating room for 
+improvement in capturing true anomalies.
+
+
+\subsubsection{Final Models - Post-Hyperparameter-Tuning}
+After training and initial tuning of the autoencoder and C-LSTM models, a more detailed search through a finer hyperparamter space around the initial model parameters was undertaken to eke out additional performance. 
+The search space and results of this tuning are provided in Appendix A. As previously discussed, the anomaly detection problem requires that the model balances the accuracy of positive predictions and the ability
+to identify all actual sparse anomalies. This is balance that depends on the exact goals of the model, (i.e. how important finding anomalies is vs. how damaging false-negatives are). 
+The best model according to the F1-score, the harmonic mean of precision and recall, offers a simple metric by which we select the best model in our paper. The resulting best models
+according to F1-score are described in Table \ref{tab:clstm-optimal-params} and Table \ref{tab:autoenc-optimal-params} below for the C-LSTM and Autoencoder models, respectively.
+\begin{table}[h]
+   \centering
+   \caption{C-LSTM Best Model Paramters}
+   \label{tab:clstm-optimal-params}
+   \begin{tabular}{|l|l|}
+   \hline
+   \textbf{Hyperparameter}   & \textbf{Values}         \\ \hline
+   Conv1 Output Channels     & 16                 \\ \hline
+   Kernel Size               & 3                  \\ \hline
+   LSTM Hidden Size          & 16               \\ \hline
+   FC1 Output Features       & 4              \\ \hline
+   Learning Rate             & 0.001            \\ \hline
+   Optimizer                 & Adam             \\ \hline
+   Criterion                 & BCELoss                 \\ \hline
+   \end{tabular}
+   \end{table}
+
+\begin{table}[h]
+   \centering
+   \caption{Autoencoder Best Model Paramters}
+   \label{tab:autoenc-optimal-params}
+   \begin{tabular}{|l|l|}
+   \hline
+   \textbf{Hyperparameter}               & \textbf{Values}                                 \\ \hline
+   Encoder Layer Sizes                   & \small{[128,64,32]}       \\ \hline
+   Autoencoder Learning Rate           & 0.01                           \\ \hline
+   Classifier Learning Rate            & 0.005                            \\ \hline
+   Activation                            & ReLU                                 \\ \hline
+   Optimizer                             & Adam                                            \\ \hline
+   Criterion                             & MSELoss                                         \\ \hline
+   \end{tabular}
+   \end{table}
+
+The overall performance of these models are described in Table \ref{tab:summary} below.
+
+\begin{table}[htbp]
+   \centering
+   \caption{Model Performance Summary}
+   \label{tab:summary}
+   \scalebox{0.9}{
+   \begin{tabular}{lcccc}
+   \hline
+   Model         & Accuracy & Precision & Recall & F1-Score \\
+   \hline
+   Random Forest & 92.5\%  & 61.2\%   & 50.7\% & 55.5\% \\
+   Autoencoder   & 90.3\%  & 71.9\%   & 41.8\% & 52.9\% \\
+   C-LSTM        & 91.5\%  & 69.9\%   & 76.2\% & 64.6\% \\
+   \end{tabular}
+   }
+   \end{table}
+
+For the Autoencoder, the adjustment of layer sizes and learning rates was particularly impactful in improving the model's ability to effectively capture less certain anomalies, as indicated by the 
+increase in recall over the baseline autoencoder model trained previously. This increase in recall was the primary source of improvement in the overall F1-score for the autoencoder modle. 
+The C-LSTM model, benefitted from the fine-tuning of its convolutional and LSTM units, with similar improvement in the recall contributing most strongly to the overall improved performance in F1-score.
+
+Note that the accuracy of these models does not improve over the baseline autoencoder and C-LSTM models. However, the uniquely sparse nature of the anomaly detection problem incentivies us to focus on
+these other metrics which more closely track the expected goals of the model. Fine-tuning of the model hyperparameters around the initially explored space resulted in a moderate increase in these more 
+important dimensions of model performance of recall and F1-score. 
+
+\section{Potential Areas for Improvement}
+The success of the autoencoder model hinges on its performance in identifying anomalies during the subsequent evaluation phase. 
+The effectiveness of anomaly detection will be assessed in conjunction with the classifier's performance.
+The dataset exhibits a significant class imbalance, with the majority being normal network instances, while accurate anomaly detection remains crucial. 
+Despite our attempt to address this through the window sliding method for balancing the dataset, an alternative strategy involves selectively omitting some normal data. 
+This approach aims to enhance accuracy in identifying anomaly data points by mitigating the impact of the dominant normal class.
+
+A crucial next step not explored by this paper is the application of our models to unseen web-traffic data. While we have demonstrated that the fundamental model architecture of
+both the C-LSTM and Autoencoder approaches is valid, we have not seen how these perform on new real-world data. The testing and model tuning performed in this paper 
+has resulted in models that out-perform conventional machine learning approaches such as Random Forest. Models have also been optimized through a hyperparameter search validated
+against a held-out validaiton set of data. However, the next step to truly understand the effectiveness of these models is application to an un-seen test set of new web-traffic data
+with and without actual anomalies. 
 %-------------------------------------------------------------------------
-\section{Other Sections}
-
-
-You are welcome to introduce additional sections or subsections, if required, to address the following questions in detail. 
-
-(5 points) Appropriate use of figures / tables / visualizations. Are the ideas presented with appropriate illustration? Are the results presented clearly; are the important differences illustrated? 
-
-(5 points) Overall clarity. Is the manuscript self-contained? Can a peer who has also taken Deep Learning understand all of the points addressed above? Is sufficient detail provided? 
-
-(5 points) Finally, points will be distributed based on your understanding of how your project relates to Deep Learning. Here are some questions to think about: 
-
-What was the structure of your problem? How did the structure of your model reflect the structure of your problem? 
-
-What parts of your model had learned parameters (e.g., convolution layers) and what parts did not (e.g., post-processing classifier probabilities into decisions)? 
-
-What representations of input and output did the neural network expect? How was the data pre/post-processed?
-What was the loss function? 
-
-Did the model overfit? How well did the approach generalize? 
-
-What hyperparameters did the model have? How were they chosen? How did they affect performance? What optimizer was used? 
-
-What Deep Learning framework did you use? 
-
-What existing code or models did you start with and what did those starting points provide? 
-
-Briefly discuss potential future work that the research community could focus on to make improvements in the direction of your project's topic.
-
-
-%-------------------------------------------------------------------------
-
-\section{Work Division}
-
-Please add a section on the delegation of work among team members at the end of the report, in the form of a table and paragraph description. This and references do \textbf{NOT} count towards your page limit. An example has been provided in Table \ref{tab:contributions}.
-
-\newpage
-\newpage
-\section{Miscellaneous Information}
-
-The rest of the information in this format template has been adapted from CVPR 2020 and provides guidelines on the lower-level specifications regarding the paper's format.
-
-\subsection{Language}
-
-All manuscripts must be in English.
-
-
-\subsection{Paper length}
-Papers, excluding the references section,
-must be no longer than six pages in length. The references section
-will not be included in the page count, and there is no limit on the
-length of the references section. For example, a paper of six pages
-with two pages of references would have a total length of 8 pages.
-
-%-------------------------------------------------------------------------
-\subsection{The ruler}
-The \LaTeX\ style defines a printed ruler which should be present in the
-version submitted for review.  The ruler is provided in order that
-reviewers may comment on particular lines in the paper without
-circumlocution.  If you are preparing a document using a non-\LaTeX\
-document preparation system, please arrange for an equivalent ruler to
-appear on the final output pages.  The presence or absence of the ruler
-should not change the appearance of any other content on the page.  The
-camera ready copy should not contain a ruler. (\LaTeX\ users may uncomment
-the \verb'\cvprfinalcopy' command in the document preamble.)  Reviewers:
-note that the ruler measurements do not align well with lines in the paper
---- this turns out to be very difficult to do well when the paper contains
-many figures and equations, and, when done, looks ugly.  Just use fractional
-references (e.g.\ this line is $095.5$), although in most cases one would
-expect that the approximate location will be adequate.
-
-\subsection{Mathematics}
-
-Please number all of your sections and displayed equations.  It is
-important for readers to be able to refer to any particular equation.  Just
-because you didn't refer to it in the text doesn't mean some future reader
-might not need to refer to it.  It is cumbersome to have to use
-circumlocutions like ``the equation second from the top of page 3 column
-1''.  (Note that the ruler will not be present in the final copy, so is not
-an alternative to equation numbers).  All authors will benefit from reading
-Mermin's description of how to write mathematics:
-\url{http://www.pamitc.org/documents/mermin.pdf}.
-
-Finally, you may feel you need to tell the reader that more details can be
-found elsewhere, and refer them to a technical report.  For conference
-submissions, the paper must stand on its own, and not {\em require} the
-reviewer to go to a techreport for further details.  Thus, you may say in
-the body of the paper ``further details may be found
-in~\cite{Authors14b}''.  Then submit the techreport as additional material.
-Again, you may not assume the reviewers will read this material.
-
-Sometimes your paper is about a problem which you tested using a tool which
-is widely known to be restricted to a single institution.  For example,
-let's say it's 1969, you have solved a key problem on the Apollo lander,
-and you believe that the CVPR70 audience would like to hear about your
-solution.  The work is a development of your celebrated 1968 paper entitled
-``Zero-g frobnication: How being the only people in the world with access to
-the Apollo lander source code makes us a wow at parties'', by Zeus \etal.
-
-You can handle this paper like any other.  Don't write ``We show how to
-improve our previous work [Anonymous, 1968].  This time we tested the
-algorithm on a lunar lander [name of lander removed for blind review]''.
-That would be silly, and would immediately identify the authors. Instead
-write the following:
-\begin{quotation}
-\noindent
-   We describe a system for zero-g frobnication.  This
-   system is new because it handles the following cases:
-   A, B.  Previous systems [Zeus et al. 1968] didn't
-   handle case B properly.  Ours handles it by including
-   a foo term in the bar integral.
-
-   ...
-
-   The proposed system was integrated with the Apollo
-   lunar lander, and went all the way to the moon, don't
-   you know.  It displayed the following behaviours
-   which show how well we solved cases A and B: ...
-\end{quotation}
-As you can see, the above text follows standard scientific convention,
-reads better than the first version, and does not explicitly name you as
-the authors.  A reviewer might think it likely that the new paper was
-written by Zeus \etal, but cannot make any decision based on that guess.
-He or she would have to be sure that no other authors could have been
-contracted to solve problem B.
-\medskip
-
-\noindent
-FAQ\medskip\\
-{\bf Q:} Are acknowledgements OK?\\
-{\bf A:} No.  Leave them for the final copy.\medskip\\
-{\bf Q:} How do I cite my results reported in open challenges?
-{\bf A:} To conform with the double blind review policy, you can report results of other challenge participants together with your results in your paper. For your results, however, you should not identify yourself and should not mention your participation in the challenge. Instead present your results referring to the method proposed in your paper and draw conclusions based on the experimental comparison to other results.\medskip\\
-
-\begin{figure}[t]
-\begin{center}
-\fbox{\rule{0pt}{2in} \rule{0.9\linewidth}{0pt}}
-   %\includegraphics[width=0.8\linewidth]{egfigure.eps}
-\end{center}
-   \caption{Example of caption.  It is set in Roman so that mathematics
-   (always set in Roman: $B \sin A = A \sin B$) may be included without an
-   ugly clash.}
-\label{fig:long}
-\label{fig:onecol}
-\end{figure}
-
-\subsection{Miscellaneous}
-
-\noindent
-Compare the following:\\
-\begin{tabular}{ll}
- \verb'$conf_a$' &  $conf_a$ \\
- \verb'$\mathit{conf}_a$' & $\mathit{conf}_a$
-\end{tabular}\\
-See The \TeX book, p165.
-
-The space after \eg, meaning ``for example'', should not be a
-sentence-ending space. So \eg is correct, {\em e.g.} is not.  The provided
-\verb'\eg' macro takes care of this.
-
-When citing a multi-author paper, you may save space by using ``et alia'',
-shortened to ``\etal'' (not ``{\em et.\ al.}'' as ``{\em et}'' is a complete word.)
-However, use it only when there are three or more authors.  Thus, the
-following is correct: ``
-   Frobnication has been trendy lately.
-   It was introduced by Alpher~\cite{Alpher02}, and subsequently developed by
-   Alpher and Fotheringham-Smythe~\cite{Alpher03}, and Alpher \etal~\cite{Alpher04}.''
-
-This is incorrect: ``... subsequently developed by Alpher \etal~\cite{Alpher03} ...''
-because reference~\cite{Alpher03} has just two authors.  If you use the
-\verb'\etal' macro provided, then you need not worry about double periods
-when used at the end of a sentence as in Alpher \etal.
-
-For this citation style, keep multiple citations in numerical (not
-chronological) order, so prefer \cite{Alpher03,Alpher02,Authors14} to
-\cite{Alpher02,Alpher03,Authors14}.
-
-
-\begin{figure*}
-\begin{center}
-\fbox{\rule{0pt}{2in} \rule{.9\linewidth}{0pt}}
-\end{center}
-   \caption{Example of a short caption, which should be centered.}
-\label{fig:short}
-\end{figure*}
-
-%------------------------------------------------------------------------
-\subsection{Formatting your paper}
-
-All text must be in a two-column format. The total allowable width of the
-text area is $6\frac78$ inches (17.5 cm) wide by $8\frac78$ inches (22.54
-cm) high. Columns are to be $3\frac14$ inches (8.25 cm) wide, with a
-$\frac{5}{16}$ inch (0.8 cm) space between them. The main title (on the
-first page) should begin 1.0 inch (2.54 cm) from the top edge of the
-page. The second and following pages should begin 1.0 inch (2.54 cm) from
-the top edge. On all pages, the bottom margin should be 1-1/8 inches (2.86
-cm) from the bottom edge of the page for $8.5 \times 11$-inch paper; for A4
-paper, approximately 1-5/8 inches (4.13 cm) from the bottom edge of the
-page.
-
-%-------------------------------------------------------------------------
-\subsection{Margins and page numbering}
-
-All printed material, including text, illustrations, and charts, must be kept
-within a print area 6-7/8 inches (17.5 cm) wide by 8-7/8 inches (22.54 cm)
-high.
-
-
-
-%-------------------------------------------------------------------------
-\subsection{Type-style and fonts}
-
-Wherever Times is specified, Times Roman may also be used. If neither is
-available on your word processor, please use the font closest in
-appearance to Times to which you have access.
-
-MAIN TITLE. Center the title 1-3/8 inches (3.49 cm) from the top edge of
-the first page. The title should be in Times 14-point, boldface type.
-Capitalize the first letter of nouns, pronouns, verbs, adjectives, and
-adverbs; do not capitalize articles, coordinate conjunctions, or
-prepositions (unless the title begins with such a word). Leave two blank
-lines after the title.
-
-AUTHOR NAME(s) and AFFILIATION(s) are to be centered beneath the title
-and printed in Times 12-point, non-boldface type. This information is to
-be followed by two blank lines.
-
-The ABSTRACT and MAIN TEXT are to be in a two-column format.
-
-MAIN TEXT. Type main text in 10-point Times, single-spaced. Do NOT use
-double-spacing. All paragraphs should be indented 1 pica (approx. 1/6
-inch or 0.422 cm). Make sure your text is fully justified---that is,
-flush left and flush right. Please do not place any additional blank
-lines between paragraphs.
-
-Figure and table captions should be 9-point Roman type as in
-Figures~\ref{fig:onecol} and~\ref{fig:short}.  Short captions should be centred.
-
-\noindent Callouts should be 9-point Helvetica, non-boldface type.
-Initially capitalize only the first word of section titles and first-,
-second-, and third-order headings.
-
-FIRST-ORDER HEADINGS. (For example, {\large \bf 1. Introduction})
-should be Times 12-point boldface, initially capitalized, flush left,
-with one blank line before, and one blank line after.
-
-SECOND-ORDER HEADINGS. (For example, { \bf 1.1. Database elements})
-should be Times 11-point boldface, initially capitalized, flush left,
-with one blank line before, and one after. If you require a third-order
-heading (we discourage it), use 10-point Times, boldface, initially
-capitalized, flush left, preceded by one blank line, followed by a period
-and your text on the same line.
-
-%-------------------------------------------------------------------------
-\subsection{Footnotes}
-
-Please use footnotes\footnote {This is what a footnote looks like.  It
-often distracts the reader from the main flow of the argument.} sparingly.
-Indeed, try to avoid footnotes altogether and include necessary peripheral
-observations in
-the text (within parentheses, if you prefer, as in this sentence).  If you
-wish to use a footnote, place it at the bottom of the column on the page on
-which it is referenced. Use Times 8-point type, single-spaced.
-
-
-%-------------------------------------------------------------------------
-\subsection{References}
-
-List and number all bibliographical references in 9-point Times,
-single-spaced, at the end of your paper. When referenced in the text,
-enclose the citation number in square brackets, for
-example~\cite{Authors14}.  Where appropriate, include the name(s) of
-editors of referenced books.
-
-\begin{table}
-\begin{center}
-\begin{tabular}{|l|c|}
-\hline
-Method & Frobnability \\
-\hline\hline
-Theirs & Frumpy \\
-Yours & Frobbly \\
-Ours & Makes one's heart Frob\\
-\hline
-\end{tabular}
-\end{center}
-\caption{Results.   Ours is better.}
-\end{table}
-
-%-------------------------------------------------------------------------
-\subsection{Illustrations, graphs, and photographs}
-
-All graphics should be centered.  Please ensure that any point you wish to
-make is resolvable in a printed copy of the paper.  Resize fonts in figures
-to match the font in the body text, and choose line widths which render
-effectively in print.  Many readers (and reviewers), even of an electronic
-copy, will choose to print your paper in order to read it.  You cannot
-insist that they do otherwise, and therefore must not assume that they can
-zoom in to see tiny details on a graphic.
-
-When placing figures in \LaTeX, it's almost always best to use
-\verb+\includegraphics+, and to specify the  figure width as a multiple of
-the line width as in the example below
-{\small\begin{verbatim}
-   \usepackage[dvips]{graphicx} ...
-   \includegraphics[width=0.8\linewidth]
-                   {myfile.eps}
-\end{verbatim}
-}
-
-
-%-------------------------------------------------------------------------
-\subsection{Color}
-
-Please refer to the author guidelines on the CVPR 2020 web page for a discussion
-of the use of color in your document.
-
-%------------------------------------------------------------------------
-
-\section{Team Contributions}
-Contributions by individual team members for this project are described below. 
-
-\begin{table*}
-\begin{tabular}{|l|c|p{6cm}|}
-\hline
-Student Name & Contributed Aspects & Details \\
-\hline\hline
-Lily Chebotarova            & C-LSTM and initial research  & Researched labelled anomaly detection datasets and found selected Yahoo dataset for project. Developed C-LSTM model implementation code \(anomalydetection.ipynb\). \\ \hline 
-Raga Lasya Munagala         & Pre-processing & Developed data pre-processing code \(data\_preprocessing.ipynb\). \\ \hline
-Ligeng Peng                 & Auto-encoder with Regression  & Developed autoencoder with regression model implementation code \(anomaly\_detection\_encoder.ipynb\). \\ \hline
-Brian Zhang                 & Hyperparmater Tuning, Model Evaluation, and Report Writing  & Performed hyperparameter tuning of Auto-encoder model. Authored ModelEvaluation.py script to evaluate both models. Primary author for text of report itself outside of autoencoder and C-LSTM sections describing model architecture and training (handled all LaTeX formatting). Created and maintained team git repo: \url{https://github.com/brian-x-zhang/CS7643-Anamoly}. \\ \hline
-\hline
-\end{tabular}
-\caption{Contributions of team members.}
-\label{tab:contributions}
-\end{table*}
-
-
-%-------------------------------------------------------------------------
-
-
 {\small
 \bibliographystyle{ieee_fullname}
 \bibliography{egbib}
 }
+
+%-------------------------------------------------------------------------
+\newpage
+\onecolumn
+\begin{appendices}
+
+   \begin{table}
+   \begin{tabular}{|l|c|p{6cm}|}
+   \hline
+   Student Name & Contributed Aspects & Details \\
+   \hline\hline
+   Lily Chebotarova            & C-LSTM and exploratory data  & Researched labelled anomaly detection datasets and found selected Yahoo dataset for project. Developed C-LSTM model implementation code \(anomalydetection.ipynb\) and respective report sections for the model approach and training.. \\ \hline 
+   Raga Lasya Munagala         & Pre-processing & Developed data pre-processing code \(data\_preprocessing.ipynb\) and report section on -reprocessing. \\ \hline
+   Ligeng Peng                 & Autoencoder  & Developed autoencoder with regression model implementation code \(anomaly\_detection\_encoder.ipynb\) and report sections for Autoencoder model  approach, training and experiments.. \\ \hline
+   Brian Zhang                 & Hyperparamater Tuning, Overall Report and LaTeX  & Performed hyperparameter tuning of both models \(non-notebook files in git repo\). Main author for abstract, introduction, and hyperparamter tuning write-ups in report. Responsible for LaTeX compilation and overall report format/organization. Created and maintained team git repo: \url{https://github.com/brian-x-zhang/CS7643-Anamoly}. \\ \hline
+   \hline
+   \end{tabular}
+   \caption{Contributions of team members}
+   \label{tab:contributions}
+   \end{table}
+
+
+\section{Hyperparameter Tuning Results}
+   \tiny{
+
+   \begin{center}
+   \begin{tabular}{llrrlllrrrrr}
+      \hline
+      type & encoder\_layer\_sizes & learning\_rate & learning\_rate\_classifier & activation & optimizer & criterion & epochs & F1 & Accuracy & Recall & Precision \\
+      \hline
+      autoencoder & [128, 64, 32] & 0.010000 & 0.005000 & ReLU() & Adam & MSELoss & 200 & 0.528876 & 0.903117 & 0.418212 & 0.719181 \\
+      autoencoder & [32, 16, 8] & 0.001000 & 0.005000 & LeakyReLU(negative\_slope=0.01) & Adam & MSELoss & 200 & 0.514819 & 0.904556 & 0.389427 & 0.759309 \\
+      autoencoder & [32, 16, 8] & 0.001000 & 0.001000 & ReLU() & Adam & MSELoss & 200 & 0.501046 & 0.905600 & 0.364517 & 0.801095 \\
+      autoencoder & [32, 16, 8] & 0.001000 & 0.001000 & LeakyReLU(negative\_slope=0.01) & Adam & MSELoss & 200 & 0.478569 & 0.899302 & 0.355383 & 0.732459 \\
+      autoencoder & [128, 64, 32] & 0.001000 & 0.001000 & LeakyReLU(negative\_slope=0.01) & Adam & MSELoss & 200 & 0.447730 & 0.904556 & 0.297537 & 0.904121 \\
+      autoencoder & [128, 64, 32] & 0.010000 & 0.000500 & LeakyReLU(negative\_slope=0.01) & Adam & MSELoss & 200 & 0.436072 & 0.898726 & 0.301135 & 0.790123 \\
+      autoencoder & [32, 16, 8] & 0.010000 & 0.001000 & ReLU() & Adam & MSELoss & 200 & 0.432758 & 0.898294 & 0.298367 & 0.787436 \\
+      autoencoder & [32, 16, 8] & 0.010000 & 0.001000 & LeakyReLU(negative\_slope=0.01) & Adam & MSELoss & 200 & 0.423208 & 0.896603 & 0.291724 & 0.770468 \\
+      autoencoder & [128, 64, 32] & 0.010000 & 0.001000 & ReLU() & Adam & MSELoss & 200 & 0.406534 & 0.896711 & 0.272073 & 0.803761 \\
+      autoencoder & [128, 64, 32] & 0.010000 & 0.000500 & ReLU() & Adam & MSELoss & 200 & 0.332598 & 0.891096 & 0.208691 & 0.818675 \\
+      autoencoder & [64, 32, 16] & 0.001000 & 0.001000 & LeakyReLU(negative\_slope=0.01) & Adam & MSELoss & 200 & 0.313806 & 0.891240 & 0.191254 & 0.873578 \\
+      autoencoder & [64, 32, 16] & 0.010000 & 0.000500 & ReLU() & Adam & MSELoss & 200 & 0.309910 & 0.889729 & 0.190423 & 0.831923 \\
+      autoencoder & [64, 32, 16] & 0.010000 & 0.001000 & LeakyReLU(negative\_slope=0.01) & Adam & MSELoss & 200 & 0.304126 & 0.598143 & 0.675339 & 0.196252 \\
+      autoencoder & [32, 16, 8] & 0.001000 & 0.000500 & LeakyReLU(negative\_slope=0.01) & Adam & MSELoss & 200 & 0.260186 & 0.888253 & 0.151121 & 0.934932 \\
+      autoencoder & [64, 32, 16] & 0.010000 & 0.001000 & ReLU() & Adam & MSELoss & 200 & 0.259613 & 0.885662 & 0.154166 & 0.821534 \\
+      autoencoder & [64, 32, 16] & 0.010000 & 0.005000 & LeakyReLU(negative\_slope=0.01) & Adam & MSELoss & 200 & 0.245145 & 0.385842 & 0.766953 & 0.145888 \\
+      autoencoder & [128, 64, 32] & 0.010000 & 0.005000 & LeakyReLU(negative\_slope=0.01) & Adam & MSELoss & 200 & 0.238841 & 0.202188 & 0.962635 & 0.136333 \\
+      autoencoder & [32, 16, 8] & 0.050000 & 0.000500 & ReLU() & Adam & MSELoss & 200 & 0.230135 & 0.130030 & 1.000000 & 0.130030 \\
+      autoencoder & [64, 32, 16] & 0.050000 & 0.000500 & LeakyReLU(negative\_slope=0.01) & Adam & MSELoss & 200 & 0.230135 & 0.130030 & 1.000000 & 0.130030 \\
+      autoencoder & [64, 32, 16] & 0.050000 & 0.001000 & LeakyReLU(negative\_slope=0.01) & Adam & MSELoss & 200 & 0.230135 & 0.130030 & 1.000000 & 0.130030 \\
+      autoencoder & [64, 32, 16] & 0.050000 & 0.005000 & LeakyReLU(negative\_slope=0.01) & Adam & MSELoss & 200 & 0.230135 & 0.130030 & 1.000000 & 0.130030 \\
+      autoencoder & [128, 64, 32] & 0.050000 & 0.005000 & LeakyReLU(negative\_slope=0.01) & Adam & MSELoss & 200 & 0.230135 & 0.130030 & 1.000000 & 0.130030 \\
+      autoencoder & [128, 64, 32] & 0.010000 & 0.001000 & LeakyReLU(negative\_slope=0.01) & Adam & MSELoss & 200 & 0.227303 & 0.540236 & 0.520066 & 0.145433 \\
+      autoencoder & [32, 16, 8] & 0.010000 & 0.005000 & ReLU() & Adam & MSELoss & 200 & 0.202166 & 0.443245 & 0.542485 & 0.124231 \\
+      autoencoder & [64, 32, 16] & 0.001000 & 0.001000 & ReLU() & Adam & MSELoss & 200 & 0.198317 & 0.670913 & 0.313036 & 0.145130 \\
+      autoencoder & [32, 16, 8] & 0.010000 & 0.005000 & LeakyReLU(negative\_slope=0.01) & Adam & MSELoss & 200 & 0.189957 & 0.400849 & 0.540271 & 0.115237 \\
+      autoencoder & [64, 32, 16] & 0.001000 & 0.000500 & LeakyReLU(negative\_slope=0.01) & Adam & MSELoss & 200 & 0.168347 & 0.881235 & 0.092444 & 0.940845 \\
+      autoencoder & [64, 32, 16] & 0.001000 & 0.005000 & LeakyReLU(negative\_slope=0.01) & Adam & MSELoss & 200 & 0.151977 & 0.485100 & 0.354830 & 0.096696 \\
+      autoencoder & [64, 32, 16] & 0.010000 & 0.005000 & ReLU() & Adam & MSELoss & 200 & 0.147761 & 0.519254 & 0.320509 & 0.096012 \\
+      autoencoder & [32, 16, 8] & 0.001000 & 0.005000 & ReLU() & Adam & MSELoss & 200 & 0.132365 & 0.548478 & 0.264877 & 0.088227 \\
+      autoencoder & [32, 16, 8] & 0.010000 & 0.000500 & ReLU() & Adam & MSELoss & 200 & 0.056959 & 0.873677 & 0.029338 & 0.972477 \\
+      autoencoder & [64, 32, 16] & 0.001000 & 0.005000 & ReLU() & Adam & MSELoss & 200 & 0.028868 & 0.527820 & 0.053972 & 0.019703 \\
+      autoencoder & [64, 32, 16] & 0.001000 & 0.000500 & ReLU() & Adam & MSELoss & 200 & 0.015359 & 0.870798 & 0.007750 & 0.848485 \\
+      autoencoder & [128, 64, 32] & 0.001000 & 0.000500 & LeakyReLU(negative\_slope=0.01) & Adam & MSELoss & 200 & 0.002764 & 0.870150 & 0.001384 & 1.000000 \\
+      autoencoder & [32, 16, 8] & 0.001000 & 0.000500 & ReLU() & Adam & MSELoss & 200 & 0.000000 & 0.869970 & 0.000000 & 0.000000 \\
+      autoencoder & [32, 16, 8] & 0.010000 & 0.000500 & LeakyReLU(negative\_slope=0.01) & Adam & MSELoss & 200 & 0.000000 & 0.869970 & 0.000000 & 0.000000 \\
+      autoencoder & [32, 16, 8] & 0.050000 & 0.000500 & LeakyReLU(negative\_slope=0.01) & Adam & MSELoss & 200 & 0.000000 & 0.869970 & 0.000000 & 0.000000 \\
+      autoencoder & [32, 16, 8] & 0.050000 & 0.001000 & LeakyReLU(negative\_slope=0.01) & Adam & MSELoss & 200 & 0.000000 & 0.869970 & 0.000000 & 0.000000 \\
+      autoencoder & [32, 16, 8] & 0.050000 & 0.001000 & ReLU() & Adam & MSELoss & 200 & 0.000000 & 0.869970 & 0.000000 & 0.000000 \\
+      autoencoder & [32, 16, 8] & 0.050000 & 0.005000 & LeakyReLU(negative\_slope=0.01) & Adam & MSELoss & 200 & 0.000000 & 0.869970 & 0.000000 & 0.000000 \\
+      autoencoder & [32, 16, 8] & 0.050000 & 0.005000 & ReLU() & Adam & MSELoss & 200 & 0.000000 & 0.869970 & 0.000000 & 0.000000 \\
+      autoencoder & [64, 32, 16] & 0.010000 & 0.000500 & LeakyReLU(negative\_slope=0.01) & Adam & MSELoss & 200 & 0.000000 & 0.869970 & 0.000000 & 0.000000 \\
+      autoencoder & [64, 32, 16] & 0.050000 & 0.000500 & ReLU() & Adam & MSELoss & 200 & 0.000000 & 0.869970 & 0.000000 & 0.000000 \\
+      autoencoder & [64, 32, 16] & 0.050000 & 0.001000 & ReLU() & Adam & MSELoss & 200 & 0.000000 & 0.869970 & 0.000000 & 0.000000 \\
+      autoencoder & [64, 32, 16] & 0.050000 & 0.005000 & ReLU() & Adam & MSELoss & 200 & 0.000000 & 0.869970 & 0.000000 & 0.000000 \\
+      autoencoder & [128, 64, 32] & 0.001000 & 0.000500 & ReLU() & Adam & MSELoss & 200 & 0.000000 & 0.869970 & 0.000000 & 0.000000 \\
+      autoencoder & [128, 64, 32] & 0.001000 & 0.001000 & ReLU() & Adam & MSELoss & 200 & 0.000000 & 0.869970 & 0.000000 & 0.000000 \\
+      autoencoder & [128, 64, 32] & 0.001000 & 0.005000 & LeakyReLU(negative\_slope=0.01) & Adam & MSELoss & 200 & 0.000000 & 0.869970 & 0.000000 & 0.000000 \\
+      autoencoder & [128, 64, 32] & 0.001000 & 0.005000 & ReLU() & Adam & MSELoss & 200 & 0.000000 & 0.869970 & 0.000000 & 0.000000 \\
+      autoencoder & [128, 64, 32] & 0.050000 & 0.000500 & LeakyReLU(negative\_slope=0.01) & Adam & MSELoss & 200 & 0.000000 & 0.869970 & 0.000000 & 0.000000 \\
+      autoencoder & [128, 64, 32] & 0.050000 & 0.000500 & ReLU() & Adam & MSELoss & 200 & 0.000000 & 0.869970 & 0.000000 & 0.000000 \\
+      autoencoder & [128, 64, 32] & 0.050000 & 0.001000 & LeakyReLU(negative\_slope=0.01) & Adam & MSELoss & 200 & 0.000000 & 0.869970 & 0.000000 & 0.000000 \\
+      autoencoder & [128, 64, 32] & 0.050000 & 0.001000 & ReLU() & Adam & MSELoss & 200 & 0.000000 & 0.869970 & 0.000000 & 0.000000 \\
+      autoencoder & [128, 64, 32] & 0.050000 & 0.005000 & ReLU() & Adam & MSELoss & 200 & 0.000000 & 0.869970 & 0.000000 & 0.000000 \\
+      \end{tabular}
+   \end{center}
+
+\begin{center}
+   \begin{tabular}{ |c|c|c|c|c|c|c|c|c|c|c|c|c| }
+      \hline
+      type & conv1\_out\_channels & kernel\_size & lstm\_hidden\_size & fc1\_out\_features & learning\_rate & optimizer & criterion & epochs & F1 & Accuracy & Recall & Precision \\
+      \hline
+         clstm & 16 & 3 & 16 & 4 & 0.001000 & Adam & BCELoss & 200 & 0.609093 & 0.898510 & 0.608082 & 0.610108 \\
+         clstm & 16 & 3 & 16 & 4 & 0.010000 & Adam & BCELoss & 200 & 0.000000 & 0.869970 & 0.000000 & 0.000000 \\
+         clstm & 16 & 3 & 16 & 16 & 0.001000 & Adam & BCELoss & 200 & 0.599922 & 0.889261 & 0.638528 & 0.565718 \\
+         clstm & 16 & 3 & 16 & 16 & 0.010000 & Adam & BCELoss & 200 & 0.000000 & 0.869970 & 0.000000 & 0.000000 \\
+         clstm & 16 & 3 & 16 & 32 & 0.001000 & Adam & BCELoss & 200 & 0.596846 & 0.882243 & 0.670357 & 0.537864 \\
+         clstm & 16 & 3 & 16 & 32 & 0.010000 & Adam & BCELoss & 200 & 0.000000 & 0.869970 & 0.000000 & 0.000000 \\
+         clstm & 16 & 3 & 32 & 4 & 0.001000 & Adam & BCELoss & 200 & 0.615864 & 0.897862 & 0.629671 & 0.602649 \\
+         clstm & 16 & 3 & 32 & 4 & 0.010000 & Adam & BCELoss & 200 & 0.000000 & 0.869970 & 0.000000 & 0.000000 \\
+         clstm & 16 & 3 & 32 & 16 & 0.001000 & Adam & BCELoss & 200 & 0.615240 & 0.896962 & 0.633546 & 0.597962 \\
+         clstm & 16 & 3 & 32 & 16 & 0.010000 & Adam & BCELoss & 200 & 0.680727 & 0.913374 & 0.710213 & 0.653591 \\
+         clstm & 16 & 3 & 32 & 32 & 0.001000 & Adam & BCELoss & 200 & 0.624002 & 0.894911 & 0.670634 & 0.583434 \\
+         clstm & 16 & 3 & 32 & 32 & 0.010000 & Adam & BCELoss & 200 & 0.000000 & 0.869970 & 0.000000 & 0.000000 \\
+         clstm & 16 & 5 & 16 & 4 & 0.001000 & Adam & BCELoss & 200 & 0.645031 & 0.905132 & 0.662884 & 0.628114 \\
+         clstm & 16 & 5 & 16 & 4 & 0.010000 & Adam & BCELoss & 200 & 0.000000 & 0.869970 & 0.000000 & 0.000000 \\
+         clstm & 16 & 5 & 16 & 16 & 0.001000 & Adam & BCELoss & 200 & 0.599451 & 0.889765 & 0.634376 & 0.568171 \\
+         clstm & 16 & 5 & 16 & 16 & 0.010000 & Adam & BCELoss & 200 & 0.000000 & 0.869970 & 0.000000 & 0.000000 \\
+         clstm & 16 & 5 & 16 & 32 & 0.001000 & Adam & BCELoss & 200 & 0.614854 & 0.895487 & 0.641572 & 0.590272 \\
+         clstm & 16 & 5 & 16 & 32 & 0.010000 & Adam & BCELoss & 200 & 0.699175 & 0.914741 & 0.761971 & 0.645941 \\
+         clstm & 16 & 5 & 32 & 4 & 0.001000 & Adam & BCELoss & 200 & 0.607578 & 0.893400 & 0.634653 & 0.582719 \\
+         clstm & 16 & 5 & 32 & 4 & 0.010000 & Adam & BCELoss & 200 & 0.000000 & 0.869970 & 0.000000 & 0.000000 \\
+         clstm & 16 & 5 & 32 & 16 & 0.001000 & Adam & BCELoss & 200 & 0.582443 & 0.884618 & 0.618876 & 0.550062 \\
+         clstm & 16 & 5 & 32 & 16 & 0.010000 & Adam & BCELoss & 200 & 0.000000 & 0.869970 & 0.000000 & 0.000000 \\
+         clstm & 16 & 5 & 32 & 32 & 0.001000 & Adam & BCELoss & 200 & 0.634360 & 0.900885 & 0.661223 & 0.609594 \\
+         clstm & 16 & 5 & 32 & 32 & 0.010000 & Adam & BCELoss & 200 & 0.674369 & 0.911754 & 0.702740 & 0.648200 \\
+         clstm & 32 & 3 & 16 & 4 & 0.001000 & Adam & BCELoss & 200 & 0.638962 & 0.900885 & 0.674509 & 0.606974 \\
+         clstm & 32 & 3 & 16 & 4 & 0.010000 & Adam & BCELoss & 200 & 0.000000 & 0.869970 & 0.000000 & 0.000000 \\
+         clstm & 32 & 3 & 16 & 16 & 0.001000 & Adam & BCELoss & 200 & 0.650304 & 0.902577 & 0.696651 & 0.609738 \\
+         clstm & 32 & 3 & 16 & 16 & 0.010000 & Adam & BCELoss & 200 & 0.000000 & 0.869970 & 0.000000 & 0.000000 \\
+         clstm & 32 & 3 & 16 & 32 & 0.001000 & Adam & BCELoss & 200 & 0.643100 & 0.897898 & 0.707445 & 0.589483 \\
+         clstm & 32 & 3 & 16 & 32 & 0.010000 & Adam & BCELoss & 200 & 0.000000 & 0.869970 & 0.000000 & 0.000000 \\
+         clstm & 32 & 3 & 32 & 4 & 0.001000 & Adam & BCELoss & 200 & 0.626528 & 0.897754 & 0.659563 & 0.596645 \\
+         clstm & 32 & 3 & 32 & 4 & 0.010000 & Adam & BCELoss & 200 & 0.000000 & 0.869970 & 0.000000 & 0.000000 \\
+         clstm & 32 & 3 & 32 & 16 & 0.001000 & Adam & BCELoss & 200 & 0.646150 & 0.900274 & 0.700249 & 0.599810 \\
+         clstm & 32 & 3 & 32 & 16 & 0.010000 & Adam & BCELoss & 200 & 0.000000 & 0.869970 & 0.000000 & 0.000000 \\
+         clstm & 32 & 3 & 32 & 32 & 0.001000 & Adam & BCELoss & 200 & 0.622211 & 0.892752 & 0.679214 & 0.574035 \\
+         clstm & 32 & 3 & 32 & 32 & 0.010000 & Adam & BCELoss & 200 & 0.000000 & 0.869970 & 0.000000 & 0.000000 \\
+         clstm & 32 & 5 & 16 & 4 & 0.001000 & Adam & BCELoss & 200 & 0.636823 & 0.901605 & 0.663438 & 0.612261 \\
+         clstm & 32 & 5 & 16 & 4 & 0.010000 & Adam & BCELoss & 200 & 0.000000 & 0.869970 & 0.000000 & 0.000000 \\
+         clstm & 32 & 5 & 16 & 16 & 0.001000 & Adam & BCELoss & 200 & 0.635312 & 0.896747 & 0.691669 & 0.587447 \\
+         clstm & 32 & 5 & 16 & 16 & 0.010000 & Adam & BCELoss & 200 & 0.000000 & 0.869970 & 0.000000 & 0.000000 \\
+         clstm & 32 & 5 & 16 & 32 & 0.001000 & Adam & BCELoss & 200 & 0.627376 & 0.894191 & 0.685026 & 0.578677 \\
+         clstm & 32 & 5 & 16 & 32 & 0.010000 & Adam & BCELoss & 200 & 0.000000 & 0.869970 & 0.000000 & 0.000000 \\
+         clstm & 32 & 5 & 32 & 4 & 0.001000 & Adam & BCELoss & 200 & 0.628121 & 0.898150 & 0.661500 & 0.597948 \\
+         clstm & 32 & 5 & 32 & 4 & 0.010000 & Adam & BCELoss & 200 & 0.000000 & 0.869970 & 0.000000 & 0.000000 \\
+         clstm & 32 & 5 & 32 & 16 & 0.001000 & Adam & BCELoss & 200 & 0.622782 & 0.894407 & 0.670357 & 0.581513 \\
+         clstm & 32 & 5 & 32 & 16 & 0.010000 & Adam & BCELoss & 200 & 0.000000 & 0.869970 & 0.000000 & 0.000000 \\
+         clstm & 32 & 5 & 32 & 32 & 0.001000 & Adam & BCELoss & 200 & 0.648635 & 0.903225 & 0.686964 & 0.614356 \\
+         clstm & 32 & 5 & 32 & 32 & 0.010000 & Adam & BCELoss & 200 & 0.000000 & 0.869970 & 0.000000 & 0.000000 \\
+      \hline
+   \end{tabular} 
+   \end{center}
+   }
+
+\section{Loss Curves}
+\normalsize
+Loss curves for the C-LSTM and autoenocder models prior to hyperparameter tuning are shown below.
+% Chart 1: Training Loss Over Time (C-LSTM)
+\begin{figure}[htbp]
+   \centering
+   \includegraphics[width=\linewidth]{images/C-LSTM_loss.png}
+   \caption{Training Loss Over Time (C-LSTM)}
+   \label{fig:c_lstm_training_loss}
+   \end{figure}
+   
+   % Chart 2: Training Loss Over Time (Autoencoder)
+   \begin{figure}[htbp]
+   \centering
+   \includegraphics[width=\linewidth]{images/autoenc_loss.png}
+   \caption{Training Loss Over Time (Autoencoder)}
+   \label{fig:autoencoder_training_loss}
+   \end{figure}
+
+\end{appendices}
+%-------------------------------------------------------------------------
 
 \end{document}

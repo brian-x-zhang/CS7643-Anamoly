@@ -1,29 +1,19 @@
 \begin{thebibliography}{1}\itemsep=-1pt
 
-\bibitem{Alpher02}
-FirstName Alpher.
-\newblock Frobnication.
-\newblock {\em Journal of Foo}, 12(1):234--778, 2002.
+\bibitem{chalapathy2019deep}
+R. Chalapathy and S. Chawla.
+\newblock Deep learning for anomaly detection: A survey.
+\newblock {\em arXiv}, Jan 2019.
 
-\bibitem{Alpher03}
-FirstName Alpher and FirstName Fotheringham-Smythe.
-\newblock Frobnication revisited.
-\newblock {\em Journal of Foo}, 13(1):234--778, 2003.
+\bibitem{hagemann2020reconstruction}
+T. Hagemann and K. Katsarou.
+\newblock Reconstruction-based anomaly detection for the cloud: A comparison on the yahoo! webscope s5 dataset.
+\newblock In {\em Proceedings of the 2020 4th International Conference on Cloud and Big Data Computing}, pages 68--75, New York, NY, USA, Sep 2020. Association for Computing Machinery.
 
-\bibitem{Alpher04}
-FirstName Alpher, FirstName Fotheringham-Smythe, and FirstName Gamow.
-\newblock Can a machine frobnicate?
-\newblock {\em Journal of Foo}, 14(1):234--778, 2004.
-
-\bibitem{Authors14}
-Authors.
-\newblock The frobnicatable foo filter, 2014.
-\newblock Face and Gesture submission ID 324. Supplied as additional material {\tt fg324.pdf}.
-
-\bibitem{Authors14b}
-Authors.
-\newblock Frobnication tutorial, 2014.
-\newblock Supplied as additional material {\tt tr.pdf}.
+\bibitem{kim2018web}
+T.-Y. Kim and S.-B. Cho.
+\newblock Web traffic anomaly detection using c-lstm neural networks.
+\newblock {\em Expert Systems with Applications}, 106:66--76, Sep 2018.
 
 \bibitem{yahooS5}
 Yahoo Research.
