@@ -74,7 +74,6 @@ implications if addressed effectively. The ability to accurately identify anomal
 of the quality and reliability of various services. Anomalies in web-traffic data may indicate potential issues such as unexpected spikes in user traffic which may be due to 
 cyber-attacks, system failures, or viral trends. 
 
-(5 points) How is it done today, and what are the limits of current practice?
 The current state of the art in timeseries anomaly detection primarily consists of deep learning methods, which together with the high prevalence and importance of this problem, makes it an 
 ideal candidate for study in this paper. Deep Learning methods have been found to significantly outperform the more traditional methods, as they are able to learn hierarchical features and capture 
 complexities in the data and perform better at large scale \cite{chalapathy2019deep}. Common deep learning methods employed in this field include Long Short-Term Memory (LSTM) networks and autoencoders, both of which we 
@@ -103,7 +102,7 @@ The real portion of the dataset is made up of the web traffic metrics of various
 %-------------------------------------------------------------------------
 %------------------------------------------------------------------------
 \section{Approach}
-
+All models, data, and code are contained in the team git repo at \url{https://github.com/brian-x-zhang/CS7643-Anamoly}.
 \subsection{Pre-processing}
 First, we applied pre-processing steps and exploratory analysis to the data. We focused on the A1 part of the Yahoo dataset that consists of the real web 
 traffic with manual human-applied labels for anomalies. It is presented in 67 separate files with traffic measures from various Yahoo web services and anomaly 
@@ -183,7 +182,7 @@ long short-term memory networks (LSTMs). Real web traffic data with manual anoma
 effective choice for anomaly detection especially on sequential data due to their ability to extract temporal features of the data. Additionally, the ability of these models to capture long-term dependencies 
 in time-series data also makes them more adaptable to evolving data patterns, which is crucial for accurately identifying anomalies over time. Further, the CNN layers provide the benefit of reduction of 
 variation in spatial information.  This combination allows the model to effectively capture both spatial and temporal features in the data, which are crucial for accurately identifying anomalies \cite{kim2018web} to 
-achieve higher performance for anomaly detection in time series. We attempt to replicate the results of the model presented in the paper by Tae Young Kim, Sung Bae Cho \cite{kim2018web}.
+achieve higher performance for anomaly detection in time series. We attempt to replicate the results of the model in the paper by Tae Young Kim, Sung Bae Cho \cite{kim2018web}.
 
 The data was pre-processed using the sliding window approach, with the length of the web traffic window set to 60.Our model was built in PyTorch as opposed to Keras model presented in the paper, 
 with architecture presented in Table 1. First, there are 2 convolutional layers, each followed by the tanh activation and max pooling. Then the LSTM is applied to extract the temporal features from the data. 
