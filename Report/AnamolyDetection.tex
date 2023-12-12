@@ -546,6 +546,25 @@ Loss curves for the C-LSTM and autoenocder models prior to hyperparameter tuning
    \label{fig:autoencoder_training_loss}
    \end{figure}
 
+\section{C-LSTM Model Architecture}
+
+\begin{tabular}{|l|c|c|c|c|}
+   \hline
+   Type                & Filter & Kernel size & Stride & \# Param \\ \hline
+   Convolution         & 64     & 5           & 1      & 385      \\ \hline
+   Activation (tanh)   &        &             &        & 0        \\ \hline
+   Pooling             &        & 2           & 2      & 0        \\ \hline
+   Convolution         & 64     & 5           & 1      & 20544    \\ \hline
+   Activation (tanh)   &        &             &        & 0        \\ \hline
+   Pooling             &        & 2           & 2      & 0        \\ \hline
+   LSTM (64)           &        &             &        & 262656   \\ \hline
+   Dense (32)          &        &             &        & 2080     \\ \hline
+   Activation (tanh)   &        &             &        & 0        \\ \hline
+   Dense (2)           &        &             &        & 66       \\ \hline
+   Softmax             &        &             &        & 0        \\ \hline
+   \textbf{Total parameters} & \multicolumn{4}{c|}{285730} \\ \hline
+   \end{tabular}
+
 \end{appendices}
 %-------------------------------------------------------------------------
 
